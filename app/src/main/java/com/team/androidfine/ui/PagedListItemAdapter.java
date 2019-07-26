@@ -7,33 +7,33 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidfine.BR;
 
-public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.ListItemViewHolder> {
+public abstract class PagedListItemAdapter<T> extends PagedListAdapter<T, PagedListItemAdapter.PagedListItemViewHolder> {
 
     private OnAdapterItemClickListener<T> onAdapterItemClickListener;
 
     @LayoutRes
     protected abstract int layoutRes();
 
-    public ListItemAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
+    public PagedListItemAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
         super(diffCallback);
     }
 
     @NonNull
     @Override
-    public ListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PagedListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutRes(), parent, false);
-        return new ListItemViewHolder(binding);
+        return new PagedListItemViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListItemAdapter.ListItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PagedListItemAdapter.PagedListItemViewHolder holder, int position) {
         holder.bind(getItem(position));
     }
 
@@ -41,11 +41,11 @@ public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.
         this.onAdapterItemClickListener = onAdapterItemClickListener;
     }
 
-    class ListItemViewHolder extends RecyclerView.ViewHolder {
+    class PagedListItemViewHolder extends RecyclerView.ViewHolder {
 
         private ViewDataBinding binding;
 
-        ListItemViewHolder(@NonNull ViewDataBinding binding) {
+        PagedListItemViewHolder(@NonNull ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 

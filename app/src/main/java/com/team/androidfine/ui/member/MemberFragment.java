@@ -6,10 +6,10 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidfine.R;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
-import com.team.androidfine.ui.ListItemAdapter;
 import com.team.androidfine.ui.ListItemFragment;
 import com.team.androidfine.ui.MainActivity;
 
@@ -47,7 +47,7 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
     }
 
     @Override
-    protected ListItemAdapter<MemberTuple> adapter() {
+    protected RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter() {
         return adapter;
     }
 

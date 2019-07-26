@@ -6,14 +6,12 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidfine.R;
 import com.team.androidfine.model.entity.tuple.FineTuple;
-import com.team.androidfine.ui.ListItemAdapter;
 import com.team.androidfine.ui.ListItemFragment;
 import com.team.androidfine.ui.MainActivity;
-
-import java.util.Collections;
 
 public class MemberFineFragment extends ListItemFragment<FineTuple> {
 
@@ -33,7 +31,6 @@ public class MemberFineFragment extends ListItemFragment<FineTuple> {
 
         viewModel = ViewModelProviders.of(this).get(MemberFineViewModel.class);
         viewModel.fines.observe(this, list -> {
-            Collections.sort(list, (f, b) -> b.getLocalDate().compareTo(f.getLocalDate()));
             adapter.submitList(list);
             showRecyclerViewAnimation();
         });
@@ -48,7 +45,7 @@ public class MemberFineFragment extends ListItemFragment<FineTuple> {
     }
 
     @Override
-    protected ListItemAdapter<FineTuple> adapter() {
+    protected RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter() {
         return adapter;
     }
 

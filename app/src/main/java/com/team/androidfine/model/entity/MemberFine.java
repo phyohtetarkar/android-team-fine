@@ -5,8 +5,20 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
-@Entity(tableName = "member_fine", primaryKeys = {"member_id", "date"})
+import org.joda.time.DateTime;
+
+@Entity(tableName = "member_fine",
+        primaryKeys = {"member_id", "date"},
+        foreignKeys = {
+            @ForeignKey(
+                    entity = Member.class,
+                    parentColumns = "id",
+                    childColumns = "member_id"
+            )
+        }
+)
 public class MemberFine extends BaseObservable {
 
     @NonNull
@@ -14,9 +26,11 @@ public class MemberFine extends BaseObservable {
     private MemberFineId id;
     private String title;
     private int fine;
+    private long timestamp;
 
     public MemberFine() {
         id = new MemberFineId();
+        timestamp = DateTime.now().getMillis();
     }
 
     public MemberFineId getId() {
@@ -42,5 +56,13 @@ public class MemberFine extends BaseObservable {
 
     public void setFine(int fine) {
         this.fine = fine;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

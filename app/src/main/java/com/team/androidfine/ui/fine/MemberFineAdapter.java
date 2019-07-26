@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.team.androidfine.R;
 import com.team.androidfine.model.entity.tuple.FineTuple;
-import com.team.androidfine.ui.ListItemAdapter;
+import com.team.androidfine.ui.PagedListItemAdapter;
 
-public class MemberFineAdapter extends ListItemAdapter<FineTuple> {
+public class MemberFineAdapter extends PagedListItemAdapter<FineTuple> {
 
     private static final DiffUtil.ItemCallback<FineTuple> DIFF_UTIL = new DiffUtil.ItemCallback<FineTuple>() {
         @Override

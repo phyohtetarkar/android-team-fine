@@ -1,5 +1,6 @@
 package com.team.androidfine.model.dao;
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Query;
 
@@ -24,5 +25,11 @@ public interface MemberFineDao extends CudDao<MemberFine> {
             "FROM member_fine mf LEFT JOIN Member m " +
             "ON mf.member_id = m.id")
     Flowable<List<FineTuple>> findAllWithMember();
+
+    @Query("SELECT mf.member_id, mf.date , mf.fine, m.name as member, mf.title " +
+            "FROM member_fine mf LEFT JOIN Member m " +
+            "ON mf.member_id = m.id " +
+            "ORDER BY mf.timestamp DESC")
+    DataSource.Factory<Integer, FineTuple> findAllWithMemberPageable();
 
 }

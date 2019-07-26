@@ -17,6 +17,8 @@ import com.team.androidfine.R;
 
 public abstract class ListItemFragment<T> extends Fragment {
 
+    private boolean started;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +54,20 @@ public abstract class ListItemFragment<T> extends Fragment {
         recyclerView.setHasFixedSize(true);
         //recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter());
-    }
-
-    protected void showRecyclerViewAnimation() {
-        if (getView() != null) {
-            RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
-            recyclerView.scheduleLayoutAnimation();
+        if (started) {
+            recyclerView.setLayoutAnimation(null);
         }
     }
 
-    protected abstract ListItemAdapter<T> adapter();
+    protected void showRecyclerViewAnimation() {
+        if (getView() != null && !started) {
+            RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
+            recyclerView.scheduleLayoutAnimation();
+            started = true;
+        }
+    }
+
+    protected abstract RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter();
     protected abstract void onNewClick();
 
 }
