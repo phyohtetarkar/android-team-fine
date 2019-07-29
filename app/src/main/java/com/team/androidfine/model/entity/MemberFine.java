@@ -30,7 +30,9 @@ public class MemberFine extends BaseObservable {
 
     public MemberFine() {
         id = new MemberFineId();
-        timestamp = DateTime.now().getMillis();
+        DateTime date = DateTime.now();
+        id.setDate(date.toLocalDate().toString());
+        timestamp = date.getMillis();
     }
 
     public MemberFineId getId() {

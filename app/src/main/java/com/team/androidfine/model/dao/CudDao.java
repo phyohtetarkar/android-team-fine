@@ -10,6 +10,12 @@ import io.reactivex.Completable;
 public interface CudDao<T> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertSync(T entity);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateSync(T entity);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insert(T entity);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

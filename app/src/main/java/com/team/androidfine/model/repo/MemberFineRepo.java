@@ -8,8 +8,6 @@ import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.MemberFineId;
 import com.team.androidfine.model.entity.tuple.FineTuple;
 
-import org.joda.time.LocalDate;
-
 import java.util.List;
 
 import io.reactivex.BackpressureStrategy;
@@ -26,14 +24,25 @@ public class MemberFineRepo {
     }
 
     public Completable save(MemberFine fine) {
-        if (fine.getId().getMemberId() > 0
-                && fine.getId().getDate() != null
-                && !fine.getId().getDate().isEmpty()) {
-            return dao.update(fine);
-        }
+        return Completable.create(emitter -> {
+            if (emitter.isDisposed()) {
+                return;
+            }
 
-        fine.getId().setDate(LocalDate.now().toString());
-        return dao.insert(fine);
+            try {
+                if (dao.findCountById(fine.getId().getMemberId(), fine.getId().getDate()) > 0) {
+                    MemberFine old = dao.findByIdSync(fine.getId().getMemberId(), fine.getId().getDate());
+                    fine.setFine(fine.getFine() + old.getFine());
+                    dao.updateSync(fine);
+                } else {
+                    dao.insertSync(fine);
+                }
+                emitter.onComplete();
+            } catch (Exception e) {
+                e.printStackTrace();
+                emitter.onError(e);
+            }
+        });
     }
 
     public Completable delete(MemberFine fine) {

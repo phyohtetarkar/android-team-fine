@@ -15,6 +15,12 @@ import io.reactivex.Single;
 @Dao
 public interface MemberFineDao extends CudDao<MemberFine> {
 
+    @Query("SELECT COUNT(*) FROM member_fine WHERE member_id = :memberId AND date = :date")
+    long findCountById(int memberId, String date);
+
+    @Query("SELECT * FROM member_fine WHERE member_id = :memberId AND date = :date")
+    MemberFine findByIdSync(int memberId, String date);
+
     @Query("SELECT * FROM member_fine WHERE member_id = :memberId AND date = :date LIMIT 1")
     Single<MemberFine> findById(int memberId, String date);
 
