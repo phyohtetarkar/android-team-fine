@@ -12,7 +12,7 @@ public class MemberFineAdapter extends PagedListItemAdapter<FineTuple> {
     private static final DiffUtil.ItemCallback<FineTuple> DIFF_UTIL = new DiffUtil.ItemCallback<FineTuple>() {
         @Override
         public boolean areItemsTheSame(@NonNull FineTuple oldItem, @NonNull FineTuple newItem) {
-            return oldItem.getId().equals(newItem.getId());
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override

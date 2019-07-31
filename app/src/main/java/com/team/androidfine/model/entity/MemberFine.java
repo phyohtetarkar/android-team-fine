@@ -1,46 +1,52 @@
 package com.team.androidfine.model.entity;
 
-import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.room.Embedded;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 import org.joda.time.DateTime;
 
 @Entity(tableName = "member_fine",
-        primaryKeys = {"member_id", "date"},
         foreignKeys = {
-            @ForeignKey(
-                    entity = Member.class,
-                    parentColumns = "id",
-                    childColumns = "member_id"
-            )
+                @ForeignKey(
+                        entity = Member.class,
+                        parentColumns = "id",
+                        childColumns = "member_id"
+                )
         }
 )
 public class MemberFine extends BaseObservable {
 
-    @NonNull
-    @Embedded
-    private MemberFineId id;
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private String title;
     private int fine;
     private long timestamp;
+    @ColumnInfo(name = "member_id")
+    private int memberId;
+
 
     public MemberFine() {
-        id = new MemberFineId();
-        DateTime date = DateTime.now();
-        id.setDate(date.toLocalDate().toString());
-        timestamp = date.getMillis();
+        timestamp = DateTime.now().getMillis();
     }
 
-    public MemberFineId getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(MemberFineId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
     public String getTitle() {

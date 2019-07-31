@@ -1,7 +1,6 @@
 package com.team.androidfine.ui.fine;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +25,6 @@ import androidx.navigation.Navigation;
 import com.team.androidfine.R;
 import com.team.androidfine.databinding.MemberFineEditFragmentBinding;
 import com.team.androidfine.model.entity.Member;
-import com.team.androidfine.model.entity.MemberFineId;
 import com.team.androidfine.ui.MainActivity;
 
 public class MemberFineEditFragment extends Fragment {
@@ -154,10 +152,10 @@ public class MemberFineEditFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Bundle args = getArguments();
-        MemberFineId id = args != null ? (MemberFineId) args.getSerializable(KEY_MEMBER_FINE_ID) : new MemberFineId();
+        long id = args != null ? args.getLong(KEY_MEMBER_FINE_ID) : 0;
 
         viewModel.findById(id);
-        new Handler().postDelayed(viewModel::findMembers, 500);
+        //new Handler().postDelayed(viewModel::findMembers, 500);
     }
 
     @Override

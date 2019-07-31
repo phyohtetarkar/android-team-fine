@@ -15,24 +15,15 @@ import io.reactivex.Single;
 @Dao
 public interface MemberFineDao extends CudDao<MemberFine> {
 
-    @Query("SELECT COUNT(*) FROM member_fine WHERE member_id = :memberId AND date = :date")
-    long findCountById(int memberId, String date);
+    @Query("SELECT * FROM member_fine WHERE id = :id LIMIT 1")
+    Single<MemberFine> findById(long id);
 
-    @Query("SELECT * FROM member_fine WHERE member_id = :memberId AND date = :date")
-    MemberFine findByIdSync(int memberId, String date);
-
-    @Query("SELECT * FROM member_fine WHERE member_id = :memberId AND date = :date LIMIT 1")
-    Single<MemberFine> findById(int memberId, String date);
-
-    @Query("SELECT * FROM member_fine")
-    Flowable<List<MemberFine>> findAll();
-
-    @Query("SELECT mf.member_id, mf.date , mf.fine, m.name as member, mf.title " +
+    @Query("SELECT mf.id, mf.timestamp , mf.fine, m.name as member, mf.title " +
             "FROM member_fine mf LEFT JOIN Member m " +
             "ON mf.member_id = m.id")
     Flowable<List<FineTuple>> findAllWithMember();
 
-    @Query("SELECT mf.member_id, mf.date , mf.fine, m.name as member, mf.title " +
+    @Query("SELECT mf.id, mf.timestamp , mf.fine, m.name as member, mf.title " +
             "FROM member_fine mf LEFT JOIN Member m " +
             "ON mf.member_id = m.id " +
             "ORDER BY mf.timestamp DESC")

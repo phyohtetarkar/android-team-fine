@@ -5,7 +5,6 @@ import androidx.paging.RxPagedListBuilder;
 
 import com.team.androidfine.model.dao.MemberFineDao;
 import com.team.androidfine.model.entity.MemberFine;
-import com.team.androidfine.model.entity.MemberFineId;
 import com.team.androidfine.model.entity.tuple.FineTuple;
 
 import java.util.List;
@@ -24,33 +23,19 @@ public class MemberFineRepo {
     }
 
     public Completable save(MemberFine fine) {
-        return Completable.create(emitter -> {
-            if (emitter.isDisposed()) {
-                return;
-            }
+        if (fine.getId() > 0) {
+            return dao.update(fine);
+        }
 
-            try {
-                if (dao.findCountById(fine.getId().getMemberId(), fine.getId().getDate()) > 0) {
-                    MemberFine old = dao.findByIdSync(fine.getId().getMemberId(), fine.getId().getDate());
-                    fine.setFine(fine.getFine() + old.getFine());
-                    dao.updateSync(fine);
-                } else {
-                    dao.insertSync(fine);
-                }
-                emitter.onComplete();
-            } catch (Exception e) {
-                e.printStackTrace();
-                emitter.onError(e);
-            }
-        });
+        return dao.insert(fine);
     }
 
     public Completable delete(MemberFine fine) {
         return dao.delete(fine);
     }
 
-    public Single<MemberFine> fineById(MemberFineId id) {
-        return dao.findById(id.getMemberId(), id.getDate());
+    public Single<MemberFine> fineById(long id) {
+        return dao.findById(id);
     }
 
     public Flowable<List<FineTuple>> findAllWithMember() {

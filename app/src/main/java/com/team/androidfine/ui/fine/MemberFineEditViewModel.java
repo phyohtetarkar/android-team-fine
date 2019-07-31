@@ -11,7 +11,6 @@ import com.team.androidfine.BR;
 import com.team.androidfine.ServiceLocator;
 import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.MemberFine;
-import com.team.androidfine.model.entity.MemberFineId;
 import com.team.androidfine.model.repo.MemberFineRepo;
 import com.team.androidfine.model.repo.MemberRepo;
 
@@ -49,7 +48,7 @@ public class MemberFineEditViewModel extends AndroidViewModel {
 
     void save() {
         MemberFine fine = memberFine.getValue();
-        fine.getId().setMemberId(member.getValue().getId());
+        fine.setMemberId(member.getValue().getId());
 
         disposable.add(memberFineRepo.save(fine)
                 .subscribeOn(Schedulers.io())
@@ -74,15 +73,14 @@ public class MemberFineEditViewModel extends AndroidViewModel {
     }
 
 
-    void findById(MemberFineId id) {
+    void findById(long id) {
         disposable.add(memberFineRepo.fineById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(fine -> {
-                    memberFine.setValue(fine);
-                    findMember(fine.getId().getMemberId());
-                }, t -> {
+                .doAfterSuccess(fine -> findMember(fine.getMemberId()))
+                .subscribe(memberFine::setValue, t -> {
                     memberFine.setValue(new MemberFine());
+                    findMembers();
                 }));
     }
 
@@ -102,6 +100,7 @@ public class MemberFineEditViewModel extends AndroidViewModel {
         disposable.add(memberRepo.findById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterSuccess(member -> findMembers())
                 .subscribe(member::setValue));
     }
 

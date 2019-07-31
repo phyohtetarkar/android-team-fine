@@ -1,49 +1,47 @@
 package com.team.androidfine.model.entity.tuple;
 
-import androidx.room.Embedded;
 import androidx.room.Ignore;
-
-import com.team.androidfine.model.entity.MemberFineId;
 
 import org.joda.time.LocalDate;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class FineTuple {
 
-    @Embedded
-    private MemberFineId id;
+    private long id;
     private int fine;
     private String title;
     private String member;
+    private long timestamp;
 
     @Ignore
     private LocalDate localDate;
 
     public FineTuple() {
-        id = new MemberFineId();
     }
 
     public String getFormatDate() {
         if (localDate == null) {
-            localDate = LocalDate.parse(id.getDate());
+            localDate = LocalDate.fromDateFields(new Date(timestamp));
         }
         return localDate.toString("MMM dd, yyyy");
     }
 
-    public LocalDate getLocalDate() {
-        if (localDate == null) {
-            localDate = LocalDate.parse(id.getDate());
-        }
-        return localDate;
-    }
-
-    public MemberFineId getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(MemberFineId id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public int getFine() {
@@ -75,8 +73,8 @@ public class FineTuple {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FineTuple fineTuple = (FineTuple) o;
-        return fine == fineTuple.fine &&
-                Objects.equals(id, fineTuple.id) &&
+        return id == fineTuple.id &&
+                fine == fineTuple.fine &&
                 Objects.equals(title, fineTuple.title) &&
                 Objects.equals(member, fineTuple.member);
     }

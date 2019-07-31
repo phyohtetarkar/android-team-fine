@@ -25,7 +25,7 @@ public class MemberFineFragment extends ListItemFragment<FineTuple> {
         adapter = new MemberFineAdapter();
         adapter.setOnAdapterItemClickListener(fine -> {
             Bundle args = new Bundle();
-            args.putSerializable(MemberFineEditFragment.KEY_MEMBER_FINE_ID, fine.getId());
+            args.putLong(MemberFineEditFragment.KEY_MEMBER_FINE_ID, fine.getId());
             Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, args);
         });
 
