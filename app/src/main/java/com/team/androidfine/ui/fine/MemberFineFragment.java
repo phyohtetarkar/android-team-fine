@@ -41,7 +41,6 @@ public class MemberFineFragment extends ListItemFragment<FineTuple> {
             adapter.submitList(list);
             showRecyclerViewAnimation();
         });
-        new Handler().postDelayed(viewModel::findAll, 500);
     }
 
     @Override
@@ -49,6 +48,7 @@ public class MemberFineFragment extends ListItemFragment<FineTuple> {
         super.onActivityCreated(savedInstanceState);
         MainActivity activity = (MainActivity) requireActivity();
         activity.getSupportActionBar().setTitle("Fines");
+        new Handler().postDelayed(viewModel::findAll, 500);
     }
 
     @Override
