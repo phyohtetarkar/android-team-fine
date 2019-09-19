@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PagedList;
 
 import com.team.androidfine.ServiceLocator;
+import com.team.androidfine.model.entity.tuple.Fine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
 import com.team.androidfine.model.repo.MemberFineRepo;
 
@@ -19,7 +20,7 @@ public class MemberFineViewModel extends AndroidViewModel {
     private MemberFineRepo repo;
 
     final CompositeDisposable disposable = new CompositeDisposable();
-    final MutableLiveData<PagedList<FineTuple>> fines = new MutableLiveData<>();
+    final MutableLiveData<PagedList<Fine>> fines = new MutableLiveData<>();
 
     public MemberFineViewModel(@NonNull Application application) {
         super(application);

@@ -1,6 +1,8 @@
 package com.team.androidfine;
 
+import android.net.Uri;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -26,4 +28,10 @@ public class BindingUtil {
         return text.isEmpty() ? 0 : Integer.parseInt(text);
     }
 
+    @BindingAdapter("path")
+    public static void setImageUri(ImageView imageView, String imageFilePath) {
+        if (imageFilePath != null && !imageFilePath.isEmpty()) {
+            imageView.setImageURI(Uri.parse(imageFilePath));
+        }
+    }
 }

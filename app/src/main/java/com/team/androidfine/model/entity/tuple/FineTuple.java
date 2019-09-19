@@ -7,7 +7,7 @@ import org.joda.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
-public class FineTuple {
+public class FineTuple implements Fine {
 
     private long id;
     private int fine;

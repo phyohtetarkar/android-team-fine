@@ -5,6 +5,7 @@ import androidx.paging.RxPagedListBuilder;
 
 import com.team.androidfine.model.dao.MemberFineDao;
 import com.team.androidfine.model.entity.MemberFine;
+import com.team.androidfine.model.entity.tuple.Fine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
 
 import java.util.List;
@@ -42,9 +43,10 @@ public class MemberFineRepo {
         return dao.findAllWithMember();
     }
 
-    public Flowable<PagedList<FineTuple>> findAllWithMemberPageable() {
-        Flowable<PagedList<FineTuple>> fineList =
-                new RxPagedListBuilder<>(dao.findAllWithMemberPageable(), 25).buildFlowable(BackpressureStrategy.BUFFER);
-        return fineList;
+    public Flowable<PagedList<Fine>> findAllWithMemberPageable() {
+        /*Flowable<PagedList<FineTuple>> fineList =
+                new RxPagedListBuilder<>(dao.findAllWithMemberPageable(), 25).buildFlowable(BackpressureStrategy.BUFFER);*/
+        MemberFineDataSourceFactory factory = new MemberFineDataSourceFactory(dao);
+        return new RxPagedListBuilder<>(factory, 25).buildFlowable(BackpressureStrategy.LATEST);
     }
 }

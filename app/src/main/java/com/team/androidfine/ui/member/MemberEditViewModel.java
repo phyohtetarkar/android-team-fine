@@ -10,12 +10,15 @@ import com.team.androidfine.ServiceLocator;
 import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.repo.MemberRepo;
 
+import java.io.File;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MemberEditViewModel extends AndroidViewModel {
     private MemberRepo repo;
+    private String oldPhoto;
 
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<Boolean> saveResult = new MutableLiveData<>();
@@ -29,13 +32,17 @@ public class MemberEditViewModel extends AndroidViewModel {
 
     void save() {
         disposable.add(repo.save(member.getValue())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> {
-                saveResult.setValue(true);
-            }, t -> {
-                saveResult.setValue(false);
-            }));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    saveResult.setValue(true);
+                }, t -> {
+                    if (member.getValue().getPhoto() != null) {
+                        File file = new File(member.getValue().getPhoto());
+                        if (file.exists()) file.delete();
+                    }
+                    saveResult.setValue(false);
+                }));
     }
 
     void delete() {
@@ -43,6 +50,10 @@ public class MemberEditViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
+                    if (member.getValue().getPhoto() != null) {
+                        File file = new File(member.getValue().getPhoto());
+                        if (file.exists()) file.delete();
+                    }
                     saveResult.setValue(true);
                 }, t -> {
                     saveResult.setValue(false);
@@ -59,6 +70,14 @@ public class MemberEditViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
+        if (oldPhoto != null && saveResult.getValue() == Boolean.TRUE) {
+            File file = new File(oldPhoto);
+            if (file.exists()) file.delete();
+        }
         disposable.dispose();
+    }
+
+    public void setOldPhoto(String oldPhoto) {
+        this.oldPhoto = oldPhoto;
     }
 }

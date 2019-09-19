@@ -18,7 +18,7 @@ public abstract class PagedListItemAdapter<T> extends PagedListAdapter<T, PagedL
     private OnAdapterItemClickListener<T> onAdapterItemClickListener;
 
     @LayoutRes
-    protected abstract int layoutRes();
+    protected abstract int layoutRes(int viewType);
 
     public PagedListItemAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
         super(diffCallback);
@@ -28,7 +28,7 @@ public abstract class PagedListItemAdapter<T> extends PagedListAdapter<T, PagedL
     @Override
     public PagedListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutRes(), parent, false);
+        ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutRes(viewType), parent, false);
         return new PagedListItemViewHolder(binding);
     }
 

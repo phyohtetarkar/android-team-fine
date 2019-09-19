@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data class="MemberEditFragmentBinding">
+
         <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.team.androidfine.ui.member.MemberEditViewModel" />
@@ -33,32 +35,39 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <FrameLayout
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/frameLayout"
                     android:layout_width="150dp"
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="0dp"
+                    app:cardPreventCornerOverlap="false">
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/placeholder"/>
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="Edit"
-                        android:padding="8dp"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/primary_text_dark"
-                        android:background="@android:color/background_dark"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/memberPhoto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/placeholder"
+                            app:path="@{vm.member.photo}" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/circle_drawable"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="@android:color/background_dark"
+                            android:padding="8dp"
+                            android:text="Edit"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/primary_text_dark" />
 
-                </FrameLayout>
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -77,12 +86,12 @@
                     android:id="@+id/btnDelete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Delete"
-                    android:visibility="@{vm.member.id > 0 ? View.VISIBLE : View.GONE}"
-                    app:backgroundTint="@color/colorDelete"
+                    android:layout_marginTop="16dp"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    android:layout_marginTop="16dp"/>
+                    android:text="Delete"
+                    android:visibility="@{vm.member.id > 0 ? View.VISIBLE : View.GONE}"
+                    app:backgroundTint="@color/colorDelete" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

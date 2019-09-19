@@ -29,4 +29,9 @@ public interface MemberFineDao extends CudDao<MemberFine> {
             "ORDER BY mf.timestamp DESC")
     DataSource.Factory<Integer, FineTuple> findAllWithMemberPageable();
 
+    @Query("SELECT mf.id, mf.timestamp , mf.fine, m.name as member, mf.title " +
+            "FROM member_fine mf LEFT JOIN Member m " +
+            "ON mf.member_id = m.id " +
+            "ORDER BY mf.timestamp DESC LIMIT 25 OFFSET :offSet")
+    List<FineTuple> findAllWithMemberPageable(int offSet);
 }

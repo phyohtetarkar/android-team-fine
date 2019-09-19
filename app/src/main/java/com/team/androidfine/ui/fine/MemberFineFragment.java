@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidfine.R;
+import com.team.androidfine.model.entity.tuple.FineHeaderTuple;
 import com.team.androidfine.model.entity.tuple.FineTuple;
 import com.team.androidfine.ui.ListItemFragment;
 import com.team.androidfine.ui.MainActivity;
@@ -24,8 +25,14 @@ public class MemberFineFragment extends ListItemFragment<FineTuple> {
 
         adapter = new MemberFineAdapter();
         adapter.setOnAdapterItemClickListener(fine -> {
+            if (fine instanceof FineHeaderTuple) {
+                return;
+            }
+
+            FineTuple fineTuple = (FineTuple) fine;
+
             Bundle args = new Bundle();
-            args.putLong(MemberFineEditFragment.KEY_MEMBER_FINE_ID, fine.getId());
+            args.putLong(MemberFineEditFragment.KEY_MEMBER_FINE_ID, fineTuple.getId());
             Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, args);
         });
 
