@@ -1,12 +1,14 @@
 package com.team.androidfine.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.team.androidfine.R;
 
 public abstract class ListItemFragment<T> extends Fragment {
@@ -34,21 +37,6 @@ public abstract class ListItemFragment<T> extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add) {
-            onNewClick();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -60,11 +48,25 @@ public abstract class ListItemFragment<T> extends Fragment {
             recyclerView.setLayoutAnimation(null);
         }
 
-        if (enableSwipeDelete){
+        if (enableSwipeDelete) {
             SwipeDeleteCallback callback = new SwipeDeleteCallback(requireContext());
             ItemTouchHelper helper = new ItemTouchHelper(callback);
             helper.attachToRecyclerView(recyclerView);
             callback.setOnSwipeDeleteListener(this::onSwipeDelete);
+        }
+
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(v -> onNewClick());
+
+        ViewTreeObserver observer = fab.getViewTreeObserver();
+        if (observer.isAlive()) {
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    fab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    new Handler().postDelayed(fab::show, 500);
+                }
+            });
         }
     }
 
@@ -77,7 +79,10 @@ public abstract class ListItemFragment<T> extends Fragment {
     }
 
     protected abstract RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter();
+
     protected abstract void onNewClick();
-    protected void onSwipeDelete(int position){}
+
+    protected void onSwipeDelete(int position) {
+    }
 
 }

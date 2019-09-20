@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -91,6 +93,10 @@ public class CategoryFragment extends ListItemFragment<Category> {
                 }
             }
         });
+
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
+        float scale = getResources().getDisplayMetrics().density;
+        params.bottomMargin = (int) ((96 * scale) + 0.5f);
         snackbar.show();
     }
 
