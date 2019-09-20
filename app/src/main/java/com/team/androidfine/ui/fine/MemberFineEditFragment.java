@@ -22,8 +22,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.team.androidfine.R;
 import com.team.androidfine.databinding.MemberFineEditFragmentBinding;
+import com.team.androidfine.model.entity.Category;
 import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.ui.MainActivity;
 
@@ -65,6 +68,25 @@ public class MemberFineEditFragment extends Fragment {
                 spinner.setSelection(memberAdapter.getPosition(member));
             }
         });
+
+        viewModel.categories.observe(this, list -> {
+            View view = getView();
+            if (view == null) return;
+            ChipGroup categoryGroup = view.findViewById(R.id.categoryGroup);
+            for (Category c : list) {
+                Chip chip = new Chip(view.getContext());
+                chip.setText(c.getName());
+                chip.setTag(c);
+                chip.setCheckable(true);
+                categoryGroup.addView(chip);
+            }
+
+            if (list.size() > 0) {
+                Chip chip = (Chip) categoryGroup.getChildAt(0);
+                chip.setChecked(true);
+            }
+            categoryGroup.invalidate();
+        });
     }
 
     @Nullable
@@ -79,21 +101,6 @@ public class MemberFineEditFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-        radioGroup.setOnCheckedChangeListener((rg, id) -> {
-            switch (id) {
-                case R.id.radioBore:
-                    viewModel.fineType.setValue(FineType.BORE);
-                    break;
-                case R.id.radioSleeping:
-                    viewModel.fineType.setValue(FineType.SLEEPING);
-                    break;
-                case R.id.radioLate:
-                    viewModel.fineType.setValue(FineType.LATE);
-                    break;
-            }
-        });
 
         Spinner spinnerAuthors = view.findViewById(R.id.spinnerAuthors);
         spinnerAuthors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -123,6 +130,17 @@ public class MemberFineEditFragment extends Fragment {
         Button btnDelete = view.findViewById(R.id.btnDelete);
         btnDelete.setOnClickListener(v -> {
             viewModel.delete();
+        });
+
+        ChipGroup chipGroup = view.findViewById(R.id.categoryGroup);
+        chipGroup.setOnCheckedChangeListener((cg, i) -> {
+            Chip chip = cg.findViewById(i);
+            if (chip != null) {
+                Category c = (Category) chip.getTag();
+                viewModel.setValue(c.getValue());
+            } else {
+                viewModel.setValue(0);
+            }
         });
     }
 

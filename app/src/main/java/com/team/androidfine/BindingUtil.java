@@ -17,7 +17,7 @@ public class BindingUtil {
 
     @BindingAdapter("android:text")
     public static void setInt(EditText editText, int value) {
-        if (value > 0) {
+        if (value >= 0) {
             editText.setText(String.valueOf(value));
         }
     }

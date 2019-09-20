@@ -41,6 +41,10 @@ public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.
         this.onAdapterItemClickListener = onAdapterItemClickListener;
     }
 
+    public T getItemAt(int position) {
+        return getItem(position);
+    }
+
     class ListItemViewHolder extends RecyclerView.ViewHolder {
 
         private ViewDataBinding binding;

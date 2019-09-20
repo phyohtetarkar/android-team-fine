@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.team.androidfine.model.AppDatabase;
+import com.team.androidfine.model.Migrations;
+import com.team.androidfine.model.repo.CategoryRepo;
 import com.team.androidfine.model.repo.MemberFineRepo;
 import com.team.androidfine.model.repo.MemberRepo;
 
@@ -23,15 +25,20 @@ public abstract class ServiceLocator {
 
     public abstract MemberFineRepo memberFineRepo();
 
+    public abstract CategoryRepo categoryRepo();
+
     static class DefaultServiceLocator extends ServiceLocator {
 
         private AppDatabase database;
 
         private MemberRepo memberRepo;
         private MemberFineRepo memberFineRepo;
+        private CategoryRepo categoryRepo;
 
         DefaultServiceLocator(Context ctx) {
-            database = Room.databaseBuilder(ctx, AppDatabase.class, "android-fine").build();
+            database = Room.databaseBuilder(ctx, AppDatabase.class, "android-fine")
+                    .addMigrations(Migrations.MIGRATION_1_2)
+                    .build();
         }
 
         @Override
@@ -48,6 +55,14 @@ public abstract class ServiceLocator {
                 memberFineRepo = new MemberFineRepo(database.memberFineDao());
             }
             return memberFineRepo;
+        }
+
+        @Override
+        public CategoryRepo categoryRepo() {
+            if (categoryRepo == null) {
+                categoryRepo = new CategoryRepo(database.categoryDao());
+            }
+            return categoryRepo;
         }
 
     }

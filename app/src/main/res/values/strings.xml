@@ -4,5 +4,7 @@
     <string name="drawer_open">Drawer open.</string>
     <string name="drawer_close">Drawer close.</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="edit_category">%s Category</string>
     <string name="take_photo">Take Photo</string>
+    <string name="save">Save</string>
 </resources>

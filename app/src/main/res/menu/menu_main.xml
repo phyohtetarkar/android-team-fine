@@ -9,5 +9,9 @@
         <item
             android:id="@+id/memberFineFragment"
             android:title="Fines" />
+        <item
+            android:id="@+id/categoryFragment"
+            android:title="Categories" />
+
     </group>
 </menu>

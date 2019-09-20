@@ -63,7 +63,7 @@ public class MemberFine extends BaseObservable {
     }
 
     public void setFine(int fine) {
-        this.fine = fine;
+        if (fine >= 0)  this.fine = fine;
     }
 
     public long getTimestamp() {

@@ -9,8 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.team.androidfine.BR;
 import com.team.androidfine.ServiceLocator;
+import com.team.androidfine.model.entity.Category;
 import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.MemberFine;
+import com.team.androidfine.model.repo.CategoryRepo;
 import com.team.androidfine.model.repo.MemberFineRepo;
 import com.team.androidfine.model.repo.MemberRepo;
 
@@ -23,6 +25,8 @@ import io.reactivex.schedulers.Schedulers;
 public class MemberFineEditViewModel extends AndroidViewModel {
     private MemberFineRepo memberFineRepo;
     private MemberRepo memberRepo;
+    private CategoryRepo categoryRepo;
+    private int value;
 
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<Boolean> saveResult = new MutableLiveData<>();
@@ -31,11 +35,13 @@ public class MemberFineEditViewModel extends AndroidViewModel {
     public final MutableLiveData<FineType> fineType = new MutableLiveData<>();
     public final MutableLiveData<MemberFine> memberFine = new MutableLiveData<>();
     public final MutableLiveData<Member> member = new MutableLiveData<>();
+    final MutableLiveData<List<Category>> categories = new MutableLiveData<>();
 
     public MemberFineEditViewModel(@NonNull Application application) {
         super(application);
         this.memberFineRepo = ServiceLocator.getInstance(application).memberFineRepo();
         this.memberRepo = ServiceLocator.getInstance(application).memberRepo();
+        this.categoryRepo =ServiceLocator.getInstance(application).categoryRepo();
         this.fineType.setValue(FineType.BORE);
     }
 
@@ -82,17 +88,22 @@ public class MemberFineEditViewModel extends AndroidViewModel {
                     memberFine.setValue(new MemberFine());
                     findMembers();
                 }));
+
+        disposable.add(categoryRepo.findAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(categories::setValue));
     }
 
     public void addFine() {
         MemberFine fine = memberFine.getValue();
-        fine.setFine(calcFine(v -> fine.getFine() + v));
+        fine.setFine(value + fine.getFine());
         fine.notifyPropertyChanged(BR.fine);
     }
 
     public void minusFine() {
         MemberFine fine = memberFine.getValue();
-        fine.setFine(calcFine(v -> fine.getFine() - v));
+        fine.setFine(fine.getFine() - value);
         fine.notifyPropertyChanged(BR.fine);
     }
 
@@ -104,22 +115,13 @@ public class MemberFineEditViewModel extends AndroidViewModel {
                 .subscribe(member::setValue));
     }
 
-    private int calcFine(Function<Integer, Integer> func) {
-        FineType type = fineType.getValue();
-        switch (type) {
-            case BORE:
-                return func.apply(100);
-            case SLEEPING:
-                return func.apply(1000);
-            case LATE:
-                return func.apply(1000);
-        }
-        return 1;
-    }
-
     @Override
     protected void onCleared() {
         super.onCleared();
         disposable.dispose();
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

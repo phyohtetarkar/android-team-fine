@@ -32,40 +32,24 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
+                <HorizontalScrollView
+                    android:id="@+id/scrollView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <RadioButton
-                        android:id="@+id/radioBore"
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/categoryGroup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{vm.fineType == FineType.BORE, default=true}"
-                        android:text="Bore" />
+                        app:singleLine="true"
+                        app:singleSelection="true">
 
-                    <RadioButton
-                        android:id="@+id/radioSleeping"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{vm.fineType == FineType.SLEEPING}"
-                        android:text="Sleeping" />
+                    </com.google.android.material.chip.ChipGroup>
 
-                    <RadioButton
-                        android:id="@+id/radioLate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{vm.fineType == FineType.LATE}"
-                        android:text="Late" />
-
-                </RadioGroup>
+                </HorizontalScrollView>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayout"
@@ -76,7 +60,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+                    app:layout_constraintTop_toBottomOf="@+id/scrollView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"

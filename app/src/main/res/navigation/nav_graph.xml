@@ -9,7 +9,7 @@
         android:id="@+id/memberFragment"
         android:name="com.team.androidfine.ui.member.MemberFragment"
         android:label="fragment_list_item"
-        tools:layout="@layout/fragment_list_item" >
+        tools:layout="@layout/fragment_list_item">
         <action
             android:id="@+id/action_memberFragment_to_memberEditFragment"
             app:destination="@id/memberEditFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/memberFineFragment"
         android:name="com.team.androidfine.ui.fine.MemberFineFragment"
         android:label="fragment_list_item"
-        tools:layout="@layout/fragment_list_item" >
+        tools:layout="@layout/fragment_list_item">
         <action
             android:id="@+id/action_memberFineFragment_to_memberFineEditFragment"
             app:destination="@id/memberFineEditFragment" />
@@ -33,4 +33,9 @@
         android:name="com.team.androidfine.ui.fine.MemberFineEditFragment"
         android:label="fragment_member_fine_edit"
         tools:layout="@layout/fragment_member_fine_edit" />
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.team.androidfine.ui.category.CategoryFragment"
+        android:label="CategoryFragment"
+        tools:layout="@layout/fragment_list_item" />
 </navigation>
