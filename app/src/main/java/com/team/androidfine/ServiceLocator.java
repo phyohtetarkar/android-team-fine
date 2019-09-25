@@ -9,6 +9,7 @@ import com.team.androidfine.model.Migrations;
 import com.team.androidfine.model.repo.CategoryRepo;
 import com.team.androidfine.model.repo.MemberFineRepo;
 import com.team.androidfine.model.repo.MemberRepo;
+import com.team.androidfine.model.service.DatabaseBackupRestoreService;
 
 public abstract class ServiceLocator {
 
@@ -27,18 +28,25 @@ public abstract class ServiceLocator {
 
     public abstract CategoryRepo categoryRepo();
 
+    public abstract DatabaseBackupRestoreService backupRestoreService();
+
+    public abstract void closeDatabase();
+
+    public abstract void openDatabase();
+
     static class DefaultServiceLocator extends ServiceLocator {
 
         private AppDatabase database;
+        private Context context;
 
         private MemberRepo memberRepo;
         private MemberFineRepo memberFineRepo;
         private CategoryRepo categoryRepo;
+        private DatabaseBackupRestoreService backupRestoreService;
 
         DefaultServiceLocator(Context ctx) {
-            database = Room.databaseBuilder(ctx, AppDatabase.class, "android-fine")
-                    .addMigrations(Migrations.MIGRATION_1_2)
-                    .build();
+            this.context = ctx;
+            openDatabase();
         }
 
         @Override
@@ -63,6 +71,29 @@ public abstract class ServiceLocator {
                 categoryRepo = new CategoryRepo(database.categoryDao());
             }
             return categoryRepo;
+        }
+
+        @Override
+        public DatabaseBackupRestoreService backupRestoreService() {
+            if (backupRestoreService == null) {
+                backupRestoreService = new DatabaseBackupRestoreService();
+            }
+            return backupRestoreService;
+        }
+
+        @Override
+        public void closeDatabase() {
+            database.close();
+        }
+
+        @Override
+        public void openDatabase() {
+            database = Room.databaseBuilder(context, AppDatabase.class, "android-fine")
+                    .addMigrations(Migrations.MIGRATION_1_2)
+                    .build();
+            memberRepo = null;
+            memberFineRepo = null;
+            categoryRepo = null;
         }
 
     }

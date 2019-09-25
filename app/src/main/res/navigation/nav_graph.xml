@@ -38,4 +38,18 @@
         android:name="com.team.androidfine.ui.category.CategoryFragment"
         android:label="CategoryFragment"
         tools:layout="@layout/fragment_list_item" />
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.team.androidfine.ui.report.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.team.androidfine.ui.report.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
+    </fragment>
 </navigation>

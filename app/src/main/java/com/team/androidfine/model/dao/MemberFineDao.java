@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
+import com.team.androidfine.model.entity.tuple.PieChartReportTuple;
 
 import java.util.List;
 
@@ -34,4 +35,9 @@ public interface MemberFineDao extends CudDao<MemberFine> {
             "ON mf.member_id = m.id " +
             "ORDER BY mf.timestamp DESC LIMIT 25 OFFSET :offSet")
     List<FineTuple> findAllWithMemberPageable(int offSet);
+
+    @Query("SELECT m.name as member,SUM(mf.fine) as amount FROM MEMBER m " +
+            "LEFT JOIN MEMBER_FINE mf ON m.id = mf.member_id " +
+            "GROUP BY m.name")
+    Flowable<List<PieChartReportTuple>> findPieReport();
 }

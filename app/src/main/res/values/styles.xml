@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
         </item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog</item>
     </style>

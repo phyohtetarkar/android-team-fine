@@ -7,6 +7,7 @@ import com.team.androidfine.model.dao.MemberFineDao;
 import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.tuple.Fine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
+import com.team.androidfine.model.entity.tuple.PieChartReportTuple;
 
 import java.util.List;
 
@@ -48,5 +49,9 @@ public class MemberFineRepo {
                 new RxPagedListBuilder<>(dao.findAllWithMemberPageable(), 25).buildFlowable(BackpressureStrategy.BUFFER);*/
         MemberFineDataSourceFactory factory = new MemberFineDataSourceFactory(dao);
         return new RxPagedListBuilder<>(factory, 25).buildFlowable(BackpressureStrategy.LATEST);
+    }
+
+    public Flowable<List<PieChartReportTuple>> findPieReport() {
+        return dao.findPieReport();
     }
 }
