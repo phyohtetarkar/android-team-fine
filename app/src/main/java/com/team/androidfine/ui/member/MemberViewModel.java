@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.team.androidfine.ServiceLocator;
+import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
 import com.team.androidfine.model.repo.MemberRepo;
 
@@ -22,6 +23,7 @@ public class MemberViewModel extends AndroidViewModel {
 
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<List<MemberTuple>> members = new MutableLiveData<>();
+    final MutableLiveData<Boolean> deleteResult = new MutableLiveData<>();
 
     public MemberViewModel(@NonNull Application application) {
         super(application);

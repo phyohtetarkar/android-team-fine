@@ -14,6 +14,7 @@ public class FineTuple implements Fine {
     private String title;
     private String member;
     private long timestamp;
+    private int memberId;
 
     @Ignore
     private LocalDate localDate;
@@ -28,20 +29,17 @@ public class FineTuple implements Fine {
         return localDate.toString("MMM dd, yyyy");
     }
 
+    @Override
+    public Object getIdentity() {
+        return id;
+    }
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 
     public int getFine() {
@@ -52,6 +50,14 @@ public class FineTuple implements Fine {
         this.fine = fine;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getMember() {
         return member;
     }
@@ -60,12 +66,28 @@ public class FineTuple implements Fine {
         this.member = member;
     }
 
-    public String getTitle() {
-        return title;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     @Override
@@ -75,12 +97,15 @@ public class FineTuple implements Fine {
         FineTuple fineTuple = (FineTuple) o;
         return id == fineTuple.id &&
                 fine == fineTuple.fine &&
+                timestamp == fineTuple.timestamp &&
+                memberId == fineTuple.memberId &&
                 Objects.equals(title, fineTuple.title) &&
-                Objects.equals(member, fineTuple.member);
+                Objects.equals(member, fineTuple.member) &&
+                Objects.equals(localDate, fineTuple.localDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fine, title, member);
+        return Objects.hash(id, fine, title, member, timestamp, memberId, localDate);
     }
 }

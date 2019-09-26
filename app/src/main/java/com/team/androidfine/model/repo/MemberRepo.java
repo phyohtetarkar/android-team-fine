@@ -29,8 +29,16 @@ public class MemberRepo {
         return dao.insert(member);
     }
 
+    public Completable insert(Member member) {
+        return dao.insert(member);
+    }
+
     public Completable delete(Member member) {
         return dao.delete(member);
+    }
+
+    public Completable deleteById(int id) {
+        return dao.deleteById(id);
     }
 
     public Single<Member> findById(int id) {

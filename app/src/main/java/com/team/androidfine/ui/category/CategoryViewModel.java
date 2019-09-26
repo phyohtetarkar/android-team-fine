@@ -29,6 +29,15 @@ public class CategoryViewModel extends AndroidViewModel {
         repo = ServiceLocator.getInstance(application).categoryRepo();
     }
 
+    public void insert(Category category) {
+        disposable.add(repo.insert(category)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                }, t -> {
+                }));
+    }
+
     void findCategories() {
         disposable.add(repo.findAll()
                 .subscribeOn(Schedulers.io())

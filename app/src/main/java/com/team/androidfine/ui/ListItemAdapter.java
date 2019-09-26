@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidfine.BR;
 
-public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.ListItemViewHolder> {
+import java.util.List;
+
+public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.ListItemViewHolder> implements RecyclerItemAdapter<T> {
 
     private OnAdapterItemClickListener<T> onAdapterItemClickListener;
 
@@ -43,6 +45,21 @@ public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.
 
     public T getItemAt(int position) {
         return getItem(position);
+    }
+
+    @Override
+    public void submitItems(List<T> list) {
+        super.submitList(list);
+    }
+
+    @Override
+    public void notifyItemInsertedAt(int pos) {
+        super.notifyItemInserted(pos);
+    }
+
+    @Override
+    public void notifyItemRemovedAt(int pos) {
+        super.notifyItemRemoved(pos);
     }
 
     class ListItemViewHolder extends RecyclerView.ViewHolder {

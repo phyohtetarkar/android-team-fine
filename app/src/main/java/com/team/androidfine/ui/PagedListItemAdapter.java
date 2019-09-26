@@ -7,13 +7,16 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidfine.BR;
 
-public abstract class PagedListItemAdapter<T> extends PagedListAdapter<T, PagedListItemAdapter.PagedListItemViewHolder> {
+import java.util.List;
+
+public abstract class PagedListItemAdapter<T> extends PagedListAdapter<T, PagedListItemAdapter.PagedListItemViewHolder> implements RecyclerItemAdapter<T> {
 
     private OnAdapterItemClickListener<T> onAdapterItemClickListener;
 
@@ -39,6 +42,27 @@ public abstract class PagedListItemAdapter<T> extends PagedListAdapter<T, PagedL
 
     public void setOnAdapterItemClickListener(OnAdapterItemClickListener<T> onAdapterItemClickListener) {
         this.onAdapterItemClickListener = onAdapterItemClickListener;
+    }
+
+    public T getItemAt(int position) {
+        return getItem(position);
+    }
+
+    @Override
+    public void submitItems(List<T> list) {
+        if (list instanceof PagedList) {
+            super.submitList((PagedList<T>) list);
+        }
+    }
+
+    @Override
+    public void notifyItemInsertedAt(int pos) {
+        super.notifyItemInserted(pos);
+    }
+
+    @Override
+    public void notifyItemRemovedAt(int pos) {
+        super.notifyItemRemoved(pos);
     }
 
     class PagedListItemViewHolder extends RecyclerView.ViewHolder {

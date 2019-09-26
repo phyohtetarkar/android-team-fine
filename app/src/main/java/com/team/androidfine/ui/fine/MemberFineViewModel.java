@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PagedList;
 
 import com.team.androidfine.ServiceLocator;
+import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.tuple.Fine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
 import com.team.androidfine.model.repo.MemberFineRepo;
@@ -21,10 +22,18 @@ public class MemberFineViewModel extends AndroidViewModel {
 
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<PagedList<Fine>> fines = new MutableLiveData<>();
+    final MutableLiveData<Boolean> deleteResult = new MutableLiveData<>();
 
     public MemberFineViewModel(@NonNull Application application) {
         super(application);
         this.repo = ServiceLocator.getInstance(application).memberFineRepo();
+    }
+
+    public void insert(MemberFine fine) {
+        disposable.add(repo.insert(fine)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe());
     }
 
     public void findAll() {
@@ -32,6 +41,17 @@ public class MemberFineViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(fines::setValue));
+    }
+
+    public void delete(long id) {
+        disposable.add(repo.deleteById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    deleteResult.setValue(true);
+                }, t -> {
+                    deleteResult.setValue(false);
+                }));
     }
 
     @Override

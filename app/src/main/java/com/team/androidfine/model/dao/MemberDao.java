@@ -8,6 +8,7 @@ import com.team.androidfine.model.entity.tuple.MemberTuple;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -19,6 +20,9 @@ public interface MemberDao extends CudDao<Member> {
 
     @Query("SELECT * FROM Member WHERE id = :id LIMIT 1")
     Single<Member> findById(int id);
+
+    @Query("DELETE FROM Member WHERE id = :id")
+    Completable deleteById(int id);
 
     @Query("SELECT * FROM Member")
     Flowable<List<Member>> findAll();

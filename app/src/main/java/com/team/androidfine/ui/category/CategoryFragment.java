@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,14 +15,10 @@ import com.team.androidfine.model.entity.Category;
 import com.team.androidfine.ui.ListItemFragment;
 import com.team.androidfine.ui.MainActivity;
 
-import java.util.List;
-
 public class CategoryFragment extends ListItemFragment<Category> {
 
     private CategoryAdapter adapter;
     private CategoryViewModel viewModel;
-    private Runnable deleteRunnable;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +63,13 @@ public class CategoryFragment extends ListItemFragment<Category> {
 
     @Override
     protected void onSwipeDelete(int position) {
-        deleteRunnable = () -> viewModel.delete(adapter.getItemAt(position));
+        invokeDeleteUndo(() -> adapter.getItemAt(position), () -> {
+            viewModel.delete(adapter.getItemAt(position));
+        }, item -> {
+            viewModel.insert(item);
+        });
+
+        /*deleteRunnable = () -> viewModel.delete(adapter.getItemAt(position));
 
         List<Category> categories = viewModel.categories.getValue();
         Category categoryToDelete = categories.get(position);
@@ -97,7 +97,7 @@ public class CategoryFragment extends ListItemFragment<Category> {
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
         float scale = getResources().getDisplayMetrics().density;
         params.bottomMargin = (int) ((96 * scale) + 0.5f);
-        snackbar.show();
+        snackbar.show();*/
     }
 
     private void showEdit(Integer id) {

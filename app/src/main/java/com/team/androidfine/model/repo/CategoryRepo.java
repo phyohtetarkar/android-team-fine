@@ -24,6 +24,10 @@ public class CategoryRepo {
         return dao.insert(c);
     }
 
+    public Completable insert(Category c) {
+        return dao.insert(c);
+    }
+
     public Completable delete(Category c) {
         return dao.delete(c);
     }

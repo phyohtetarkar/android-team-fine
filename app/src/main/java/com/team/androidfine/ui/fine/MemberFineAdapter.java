@@ -6,15 +6,16 @@ import androidx.recyclerview.widget.DiffUtil;
 import com.team.androidfine.R;
 import com.team.androidfine.model.entity.tuple.Fine;
 import com.team.androidfine.model.entity.tuple.FineHeaderTuple;
-import com.team.androidfine.model.entity.tuple.FineTuple;
 import com.team.androidfine.ui.PagedListItemAdapter;
+
+import java.util.Objects;
 
 public class MemberFineAdapter extends PagedListItemAdapter<Fine> {
 
     private static final DiffUtil.ItemCallback<Fine> DIFF_UTIL = new DiffUtil.ItemCallback<Fine>() {
         @Override
         public boolean areItemsTheSame(@NonNull Fine oldItem, @NonNull Fine newItem) {
-            return oldItem == newItem;
+            return Objects.equals(oldItem.getIdentity(), newItem.getIdentity());
         }
 
         @Override

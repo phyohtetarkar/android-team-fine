@@ -32,8 +32,16 @@ public class MemberFineRepo {
         return dao.insert(fine);
     }
 
+    public Completable insert(MemberFine fine) {
+        return dao.insert(fine);
+    }
+
     public Completable delete(MemberFine fine) {
         return dao.delete(fine);
+    }
+
+    public Completable deleteById(long id) {
+        return dao.deleteById(id);
     }
 
     public Single<MemberFine> fineById(long id) {

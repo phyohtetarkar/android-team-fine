@@ -8,7 +8,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.team.androidfine.R;
+import com.team.androidfine.model.entity.Member;
+import com.team.androidfine.model.entity.MemberFine;
+import com.team.androidfine.model.entity.tuple.Fine;
+import com.team.androidfine.model.entity.tuple.FineTuple;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
 import com.team.androidfine.ui.ListItemFragment;
 import com.team.androidfine.ui.MainActivity;
@@ -51,8 +56,10 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
         return adapter;
     }
 
+
     @Override
     protected void onNewClick() {
         Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment);
     }
+
 }
