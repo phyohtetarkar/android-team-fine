@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +33,13 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
         adapter.setOnAdapterItemClickListener(member -> {
             Bundle args = new Bundle();
             args.putInt(MemberEditFragment.KEY_MEMBER_ID, member.getMemberId());
-            Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment, args);
+            NavOptions options = new NavOptions.Builder()
+                    .setEnterAnim(R.anim.nav_enter_from_left_anim)
+                    .setExitAnim(R.anim.nav_exit_from_left_anim)
+                    .setPopEnterAnim(R.anim.nav_pop_enter_from_left_anim)
+                    .setPopExitAnim(R.anim.nav_pop_exit_from_left_anim)
+                    .build();
+            Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment, args,options);
         });
 
         viewModel = ViewModelProviders.of(this).get(MemberViewModel.class);
@@ -59,7 +66,12 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
 
     @Override
     protected void onNewClick() {
-        Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment);
+
+        NavOptions options = new NavOptions.Builder()
+                .setEnterAnim(R.anim.nav_enter_from_bottom_anim)
+                .setPopExitAnim(R.anim.nav_pop_exit_to_bottom_anim)
+                .build();
+        Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment, null, options);
     }
 
 }

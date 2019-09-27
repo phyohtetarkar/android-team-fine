@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +39,13 @@ public class MemberFineFragment extends ListItemFragment<Fine> {
 
             Bundle args = new Bundle();
             args.putLong(MemberFineEditFragment.KEY_MEMBER_FINE_ID, fineTuple.getId());
-            Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, args);
+            NavOptions options = new NavOptions.Builder()
+                    .setEnterAnim(R.anim.nav_enter_from_left_anim)
+                    .setExitAnim(R.anim.nav_exit_from_left_anim)
+                    .setPopEnterAnim(R.anim.nav_pop_enter_from_left_anim)
+                    .setPopExitAnim(R.anim.nav_pop_exit_from_left_anim)
+                    .build();
+            Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, args,options);
         });
 
         viewModel = ViewModelProviders.of(this).get(MemberFineViewModel.class);
@@ -94,6 +101,10 @@ public class MemberFineFragment extends ListItemFragment<Fine> {
 
     @Override
     protected void onNewClick() {
-        Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment);
+        NavOptions options = new NavOptions.Builder()
+                .setEnterAnim(R.anim.nav_enter_from_bottom_anim)
+                .setPopExitAnim(R.anim.nav_pop_exit_to_bottom_anim)
+                .build();
+        Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment,null,options);
     }
 }

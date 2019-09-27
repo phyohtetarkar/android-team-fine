@@ -11,10 +11,11 @@ import com.team.androidfine.model.entity.tuple.FineTuple;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MemberFineDataSource extends PageKeyedDataSource<Integer, Fine> {
 
@@ -45,20 +46,23 @@ public class MemberFineDataSource extends PageKeyedDataSource<Integer, Fine> {
     private List<Fine> groupFines(List<FineTuple> list) {
         List<Fine> fines = new ArrayList<>();
 
-        Map<String, List<Fine>> map = new HashMap<>();
+        Map<LocalDate, List<Fine>> map = new HashMap<>();
         for (FineTuple ft : list) {
-            String date = ft.getFormatDate();
-            if (map.containsKey(date)) {
-                map.get(date).add(ft);
+            ft.getFormatDate();
+            if (map.containsKey(ft.getLocalDate())) {
+                map.get(ft.getLocalDate()).add(ft);
             } else {
                 List<Fine> tmp = new ArrayList<>();
                 tmp.add(ft);
-                map.put(date, tmp);
+                map.put(ft.getLocalDate(), tmp);
             }
         }
 
-        for (Map.Entry<String, List<Fine>> en : map.entrySet()) {
-            fines.add(new FineHeaderTuple(en.getKey()));
+        List<Map.Entry<LocalDate, List<Fine>>> entries = new ArrayList<>(map.entrySet());
+        Collections.sort(entries, (f, l) -> l.getKey().compareTo(f.getKey()));
+
+        for (Map.Entry<LocalDate, List<Fine>> en : entries) {
+            fines.add(new FineHeaderTuple(en.getKey().toString("MMM dd, yyyy")));
             fines.addAll(en.getValue());
         }
 

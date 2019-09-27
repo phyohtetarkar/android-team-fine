@@ -44,7 +44,7 @@ public class SwipeDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        if (onSwipeDeleteListener != null) {
+        if (onSwipeDeleteListener != null && viewHolder.itemView.isEnabled()) {
             onSwipeDeleteListener.onSwipeDelete(viewHolder.getAdapterPosition());
         }
     }
@@ -53,7 +53,7 @@ public class SwipeDeleteCallback extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         View view = viewHolder.itemView;
 
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && view.isEnabled()) {
             float width = view.getHeight() / 3;
             float tX = dX;
 
