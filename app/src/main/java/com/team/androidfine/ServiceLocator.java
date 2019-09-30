@@ -83,6 +83,9 @@ public abstract class ServiceLocator {
 
         @Override
         public void closeDatabase() {
+            memberRepo = null;
+            memberFineRepo = null;
+            categoryRepo = null;
             database.close();
         }
 

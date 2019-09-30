@@ -87,27 +87,31 @@ public class ReportFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel.pieLiveData.observe(this, l -> {
+            if (l.size() > 0) {
+                PieData pieData = ChartDataHelper.toPieData(l);
+                pieChart.setData(pieData);
+                pieChart.setCenterText("Total\n" + pieData.getYValueSum());
+                pieChart.invalidate();
+                pieChart.animateXY(1000, 1000);
 
-            PieData pieData = ChartDataHelper.toPieData(l);
-            pieChart.setData(pieData);
-            pieChart.setCenterText("Total\n" + pieData.getYValueSum());
-            pieChart.invalidate();
-            pieChart.animateXY(1000, 1000);
+                BarData barData = ChartDataHelper.toBarData(l);
+                barChart.getXAxis().setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return l.get((int) value).getMember();
+                    }
 
-            BarData barData = ChartDataHelper.toBarData(l);
-            barChart.getXAxis().setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    return l.get((int) value).getMember();
-                }
-
-            });
-            barChart.setData(barData);
-            barChart.invalidate();
-            barChart.animateY(1000);
+                });
+                barChart.setData(barData);
+                barChart.invalidate();
+                barChart.animateY(1000);
+            } else {
+                pieChart.setData(null);
+                barChart.setData(null);
+                pieChart.invalidate();
+                barChart.invalidate();
+            }
         });
-
-
         viewModel.findReports();
     }
 
@@ -124,6 +128,8 @@ public class ReportFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        pieChart = null;
+        barChart = null;
         MainActivity activity = (MainActivity) requireActivity();
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         activity.switchToggle(true);

@@ -76,13 +76,15 @@ public class DatabaseBackupRestoreService {
                             len = zIn.read(bytes);
                         }
                         entry = zIn.getNextEntry();
+                        fOut.close();
                     }
-
+                    zIn.close();
                     source.onComplete();
                 } else {
                     source.onError(new FileNotFoundException());
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 source.onError(e);
             }
         });

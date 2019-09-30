@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,30 +16,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.team.androidfine.R;
-import com.team.androidfine.ServiceLocator;
-import com.team.androidfine.model.service.DatabaseBackupRestoreService;
 import com.team.androidfine.ui.MainActivity;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class MoreFragment extends Fragment {
 
     private static final int PERMISSION_WRITE_STORAGE = 1;
     private static final int PERMISSION_READ_STORAGE = 2;
     private static final int RESTORE_FILE_REQUEST = 3;
+    private BackupRestoreViewModel viewModel;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(BackupRestoreViewModel.class);
+        viewModel.restoreBackupResult.observe(this, result -> {
+            Snackbar.make(getView(), result, Snackbar.LENGTH_LONG).show();
+        });
+    }
 
     @Nullable
     @Override
@@ -133,40 +133,11 @@ public class MoreFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        disposable.dispose();
-    }
-
     private void executeBackup() {
-        DatabaseBackupRestoreService service = ServiceLocator.getInstance(requireContext()).backupRestoreService();
-        String fileName = "android-fine-" + System.currentTimeMillis() + ".fkp";
-        File outFile = new File(Environment.getExternalStorageDirectory(), fileName);
-        disposable.add(service.backup(outFile)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    Snackbar.make(getView(), "Backup success:" + outFile.getAbsolutePath(), Snackbar.LENGTH_LONG).show();
-                }, t -> {
-                    Snackbar.make(getView(), t.getMessage(), Snackbar.LENGTH_LONG).show();
-                }));
+        viewModel.backup();
     }
 
     private void executeRestore(InputStream stream) {
-        DatabaseBackupRestoreService service = ServiceLocator.getInstance(requireContext()).backupRestoreService();
-        disposable.add(service.restore(stream)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable1 -> ServiceLocator.getInstance(requireContext()).closeDatabase())
-                .subscribe(() -> {
-                    ServiceLocator.getInstance(requireContext()).openDatabase();
-                    Snackbar.make(getView(), "Restore success", Snackbar.LENGTH_LONG).show();
-                }, t -> {
-                    ServiceLocator.getInstance(requireContext()).openDatabase();
-                    Snackbar.make(getView(), t.getMessage(), Snackbar.LENGTH_LONG).show();
-                }));
+        viewModel.restore(stream);
     }
-
-
 }
