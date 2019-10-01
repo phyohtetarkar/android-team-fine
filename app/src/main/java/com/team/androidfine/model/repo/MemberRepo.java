@@ -53,4 +53,8 @@ public class MemberRepo {
         return dao.findAllWithFine();
     }
 
+    public Flowable<List<String>> findImages() {
+        return dao.findImages();
+    }
+
 }

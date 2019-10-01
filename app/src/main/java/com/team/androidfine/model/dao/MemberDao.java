@@ -27,6 +27,9 @@ public interface MemberDao extends CudDao<Member> {
     @Query("SELECT * FROM Member")
     Flowable<List<Member>> findAll();
 
+    @Query("SELECT m.photo FROM Member m")
+    Flowable<List<String>> findImages();
+
     @Query("SELECT m.id as memberId, m.name , m.photo, SUM(mf.fine) as totalFine " +
             "FROM Member m LEFT JOIN member_fine mf " +
             "ON mf.member_id = m.id " +

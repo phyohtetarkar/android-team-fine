@@ -7,4 +7,5 @@
     <string name="edit_category">%s Category</string>
     <string name="take_photo">Take Photo</string>
     <string name="save">Save</string>
+    <string name="export_csv">Export CSV</string>
 </resources>

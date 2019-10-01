@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.snackbar.Snackbar;
 import com.team.androidfine.R;
 import com.team.androidfine.ui.MainActivity;
 
@@ -33,18 +36,29 @@ public class ReportFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         viewModel = ViewModelProviders.of(this).get(ReportViewModel.class);
 
         MainActivity activity = (MainActivity) requireActivity();
         activity.getSupportActionBar().setTitle("Report");
         activity.switchToggle(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewModel.exportResult.observe(this, result -> {
+            Snackbar.make(getView(), result, Snackbar.LENGTH_LONG).show();
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_report, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_report, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -119,6 +133,11 @@ public class ReportFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             Navigation.findNavController(getView()).navigateUp();
+            return true;
+        }
+
+        if (item.getItemId() == R.id.action_export_csv) {
+            viewModel.exportCSV();
             return true;
         }
         return super.onOptionsItemSelected(item);

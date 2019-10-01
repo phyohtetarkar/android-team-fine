@@ -2,7 +2,6 @@ package com.team.androidfine.model.service;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
-import android.util.Log;
 
 import com.team.androidfine.AndroidFineApplication;
 
@@ -96,7 +95,7 @@ public class DatabaseBackupRestoreService {
 
     private void addFileToZip(ZipOutputStream zOut, File file, String rootDir) throws IOException {
         FileInputStream fIn = new FileInputStream(file);
-        ZipEntry zipEntry = new ZipEntry(rootDir  + file.getName());
+        ZipEntry zipEntry = new ZipEntry(rootDir + file.getName());
         zOut.putNextEntry(zipEntry);
 
         byte[] bytes = new byte[1024];

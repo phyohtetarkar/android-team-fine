@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.team.androidfine.R;
 import com.team.androidfine.util.Worker;
@@ -45,7 +46,6 @@ public abstract class ListItemFragment<T> extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter());
         if (started) {
             recyclerView.setLayoutAnimation(null);
@@ -96,10 +96,6 @@ public abstract class ListItemFragment<T> extends Fragment {
         snackbar.setAction("Undo", v -> {
             insertFunc.accept(itemToDelete);
         });
-
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
-        float scale = getResources().getDisplayMetrics().density;
-        params.bottomMargin = (int) ((96 * scale) + 0.5f);
         snackbar.show();
 
     }
