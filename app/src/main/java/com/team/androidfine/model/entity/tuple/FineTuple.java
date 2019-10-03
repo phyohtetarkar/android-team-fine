@@ -2,6 +2,8 @@ package com.team.androidfine.model.entity.tuple;
 
 import androidx.room.Ignore;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.joda.time.LocalDate;
 
 import java.util.Date;
@@ -9,10 +11,13 @@ import java.util.Objects;
 
 public class FineTuple implements Fine {
 
+    @JsonProperty("fineId")
     private long id;
     private int fine;
     private String title;
+    @JsonProperty("name")
     private String member;
+    @JsonProperty("date")
     private long timestamp;
     private int memberId;
 

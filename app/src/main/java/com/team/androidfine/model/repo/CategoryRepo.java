@@ -1,6 +1,5 @@
 package com.team.androidfine.model.repo;
 
-import com.team.androidfine.model.dao.CategoryDao;
 import com.team.androidfine.model.entity.Category;
 
 import java.util.List;
@@ -9,34 +8,15 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class CategoryRepo {
+public interface CategoryRepo {
 
-    private CategoryDao dao;
+    Completable save(Category c);
 
-    public CategoryRepo(CategoryDao dao) {
-        this.dao = dao;
-    }
+    Completable insert(Category c);
 
-    public Completable save(Category c) {
-        if (c.getId() > 0) {
-            return dao.update(c);
-        }
-        return dao.insert(c);
-    }
+    Completable delete(Category c);
 
-    public Completable insert(Category c) {
-        return dao.insert(c);
-    }
+    Flowable<List<Category>> findAll();
 
-    public Completable delete(Category c) {
-        return dao.delete(c);
-    }
-
-    public Flowable<List<Category>> findAll() {
-        return dao.findAll();
-    }
-
-    public Single<Category> findById(int id) {
-        return dao.findById(id);
-    }
+    Single<Category> findById(int id);
 }

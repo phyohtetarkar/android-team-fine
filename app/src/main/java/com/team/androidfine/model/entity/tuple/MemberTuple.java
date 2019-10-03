@@ -1,12 +1,16 @@
 package com.team.androidfine.model.entity.tuple;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class MemberTuple {
 
+    @JsonProperty("id")
     private int memberId;
     private String name;
     private String photo;
+    @JsonProperty("fine")
     private int totalFine;
 
     public int getMemberId() {

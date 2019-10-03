@@ -6,10 +6,20 @@ import androidx.room.Room;
 
 import com.team.androidfine.model.AppDatabase;
 import com.team.androidfine.model.Migrations;
+import com.team.androidfine.model.api.CategoryAPI;
+import com.team.androidfine.model.api.MemberAPI;
+import com.team.androidfine.model.api.MemberFineAPI;
 import com.team.androidfine.model.repo.CategoryRepo;
 import com.team.androidfine.model.repo.MemberFineRepo;
 import com.team.androidfine.model.repo.MemberRepo;
+import com.team.androidfine.model.repo.remote.CategoryRepoImpl;
+import com.team.androidfine.model.repo.remote.MemberFineRepoImpl;
+import com.team.androidfine.model.repo.remote.MemberRepoImpl;
 import com.team.androidfine.model.service.DatabaseBackupRestoreService;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public abstract class ServiceLocator {
 
@@ -37,6 +47,7 @@ public abstract class ServiceLocator {
     static class DefaultServiceLocator extends ServiceLocator {
 
         private AppDatabase database;
+        private Retrofit retrofit;
         private Context context;
 
         private MemberRepo memberRepo;
@@ -47,12 +58,18 @@ public abstract class ServiceLocator {
         DefaultServiceLocator(Context ctx) {
             this.context = ctx;
             openDatabase();
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.211.130:8080/")
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .build();
         }
 
         @Override
         public MemberRepo memberRepo() {
             if (memberRepo == null) {
-                memberRepo = new MemberRepo(database.memberDao());
+               // memberRepo = new MemberRepoImpl(database.memberDao());
+                memberRepo = new MemberRepoImpl(retrofit.create(MemberAPI.class));
             }
             return memberRepo;
         }
@@ -60,7 +77,8 @@ public abstract class ServiceLocator {
         @Override
         public MemberFineRepo memberFineRepo() {
             if (memberFineRepo == null) {
-                memberFineRepo = new MemberFineRepo(database.memberFineDao());
+                //memberFineRepo = new MemberFineRepoImpl(database.memberFineDao());
+                memberFineRepo = new MemberFineRepoImpl(retrofit.create(MemberFineAPI.class));
             }
             return memberFineRepo;
         }
@@ -68,7 +86,8 @@ public abstract class ServiceLocator {
         @Override
         public CategoryRepo categoryRepo() {
             if (categoryRepo == null) {
-                categoryRepo = new CategoryRepo(database.categoryDao());
+                //categoryRepo = new CategoryRepoImpl(database.categoryDao());
+                categoryRepo = new CategoryRepoImpl(retrofit.create(CategoryAPI.class));
             }
             return categoryRepo;
         }

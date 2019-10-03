@@ -2,7 +2,6 @@ package com.team.androidfine.ui.report;
 
 import android.app.Application;
 import android.os.Environment;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;

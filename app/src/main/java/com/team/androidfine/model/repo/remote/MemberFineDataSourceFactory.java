@@ -1,21 +1,21 @@
-package com.team.androidfine.model.repo;
+package com.team.androidfine.model.repo.remote;
 
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 
-import com.team.androidfine.model.dao.MemberFineDao;
+import com.team.androidfine.model.api.MemberFineAPI;
 import com.team.androidfine.model.entity.tuple.Fine;
 
 public class MemberFineDataSourceFactory extends DataSource.Factory<Integer, Fine> {
-    private MemberFineDao dao;
+    private MemberFineAPI api;
 
-    public MemberFineDataSourceFactory(MemberFineDao dao) {
-        this.dao = dao;
+    public MemberFineDataSourceFactory(MemberFineAPI api) {
+        this.api = api;
     }
 
     @NonNull
     @Override
     public DataSource<Integer, Fine> create() {
-        return new MemberFineDataSource(dao);
+        return new MemberFineDataSource(api);
     }
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.team.androidfine.ServiceLocator;
-import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
 import com.team.androidfine.model.repo.MemberRepo;
 

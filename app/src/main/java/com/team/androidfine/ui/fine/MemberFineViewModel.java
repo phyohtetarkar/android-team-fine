@@ -10,7 +10,6 @@ import androidx.paging.PagedList;
 import com.team.androidfine.ServiceLocator;
 import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.tuple.Fine;
-import com.team.androidfine.model.entity.tuple.FineTuple;
 import com.team.androidfine.model.repo.MemberFineRepo;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

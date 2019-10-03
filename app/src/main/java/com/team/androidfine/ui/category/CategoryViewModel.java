@@ -42,7 +42,9 @@ public class CategoryViewModel extends AndroidViewModel {
         disposable.add(repo.findAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(categories::setValue));
+                .subscribe(categories::setValue, t -> {
+                    t.printStackTrace();
+                }));
     }
 
     void delete(Category category) {

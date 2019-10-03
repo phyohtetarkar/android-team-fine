@@ -3,7 +3,6 @@ package com.team.androidfine.ui.fine;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
@@ -41,7 +40,7 @@ public class MemberFineEditViewModel extends AndroidViewModel {
         super(application);
         this.memberFineRepo = ServiceLocator.getInstance(application).memberFineRepo();
         this.memberRepo = ServiceLocator.getInstance(application).memberRepo();
-        this.categoryRepo =ServiceLocator.getInstance(application).categoryRepo();
+        this.categoryRepo = ServiceLocator.getInstance(application).categoryRepo();
         this.fineType.setValue(FineType.BORE);
     }
 
@@ -92,7 +91,9 @@ public class MemberFineEditViewModel extends AndroidViewModel {
         disposable.add(categoryRepo.findAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(categories::setValue));
+                .subscribe(categories::setValue, t -> {
+                    t.printStackTrace();
+                }));
     }
 
     public void addFine() {

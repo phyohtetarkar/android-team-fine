@@ -68,36 +68,6 @@ public class CategoryFragment extends ListItemFragment<Category> {
         }, item -> {
             viewModel.insert(item);
         });
-
-        /*deleteRunnable = () -> viewModel.delete(adapter.getItemAt(position));
-
-        List<Category> categories = viewModel.categories.getValue();
-        Category categoryToDelete = categories.get(position);
-        categories.remove(position);
-        adapter.submitList(categories);
-        adapter.notifyItemRemoved(position);
-
-        Snackbar snackbar = Snackbar.make(getView(), "Category deleted!", Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", v -> {
-            deleteRunnable = null;
-            categories.add(position, categoryToDelete);
-            adapter.submitList(categories);
-            adapter.notifyItemInserted(position);
-        });
-        snackbar.addCallback(new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar transientBottomBar, int event) {
-                if (deleteRunnable != null) {
-                    deleteRunnable.run();
-                    deleteRunnable = null;
-                }
-            }
-        });
-
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
-        float scale = getResources().getDisplayMetrics().density;
-        params.bottomMargin = (int) ((96 * scale) + 0.5f);
-        snackbar.show();*/
     }
 
     private void showEdit(Integer id) {
@@ -112,7 +82,6 @@ public class CategoryFragment extends ListItemFragment<Category> {
             bundle.putInt(CategoryEditFragment.KEY_CATEGORY_ID, id);
             fragment.setArguments(bundle);
         }
-
         fragment.show(ft, "dialog");
     }
 

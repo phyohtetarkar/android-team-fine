@@ -1,4 +1,4 @@
-package com.team.androidfine.model.repo;
+package com.team.androidfine.model.repo.local;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;

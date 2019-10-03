@@ -1,9 +1,7 @@
 package com.team.androidfine.model.repo;
 
 import androidx.paging.PagedList;
-import androidx.paging.RxPagedListBuilder;
 
-import com.team.androidfine.model.dao.MemberFineDao;
 import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.tuple.Fine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
@@ -11,55 +9,25 @@ import com.team.androidfine.model.entity.tuple.PieChartReportTuple;
 
 import java.util.List;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class MemberFineRepo {
+public interface MemberFineRepo {
 
-    private MemberFineDao dao;
+    Completable save(MemberFine fine);
 
-    public MemberFineRepo(MemberFineDao dao) {
-        this.dao = dao;
-    }
+    Completable insert(MemberFine fine);
 
-    public Completable save(MemberFine fine) {
-        if (fine.getId() > 0) {
-            return dao.update(fine);
-        }
+    Completable delete(MemberFine fine);
 
-        return dao.insert(fine);
-    }
+    Completable deleteById(long id);
 
-    public Completable insert(MemberFine fine) {
-        return dao.insert(fine);
-    }
+    Single<MemberFine> fineById(long id);
 
-    public Completable delete(MemberFine fine) {
-        return dao.delete(fine);
-    }
+    Flowable<List<FineTuple>> findAllWithMember();
 
-    public Completable deleteById(long id) {
-        return dao.deleteById(id);
-    }
+    Flowable<PagedList<Fine>> findAllWithMemberPageable();
 
-    public Single<MemberFine> fineById(long id) {
-        return dao.findById(id);
-    }
-
-    public Flowable<List<FineTuple>> findAllWithMember() {
-        return dao.findAllWithMember();
-    }
-
-    public Flowable<PagedList<Fine>> findAllWithMemberPageable() {
-        /*Flowable<PagedList<FineTuple>> fineList =
-                new RxPagedListBuilder<>(dao.findAllWithMemberPageable(), 25).buildFlowable(BackpressureStrategy.BUFFER);*/
-        MemberFineDataSourceFactory factory = new MemberFineDataSourceFactory(dao);
-        return new RxPagedListBuilder<>(factory, 25).buildFlowable(BackpressureStrategy.LATEST);
-    }
-
-    public Flowable<List<PieChartReportTuple>> findPieReport() {
-        return dao.findPieReport();
-    }
+    Flowable<List<PieChartReportTuple>> findPieReport();
 }

@@ -1,7 +1,6 @@
 package com.team.androidfine.ui.report;
 
 import android.app.Application;
-import android.app.ListActivity;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import org.apache.commons.csv.CSVPrinter;
 import org.joda.time.LocalDateTime;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;

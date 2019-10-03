@@ -7,6 +7,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.joda.time.DateTime;
 
 @Entity(tableName = "member_fine",
@@ -24,6 +26,7 @@ public class MemberFine extends BaseObservable {
     private long id;
     private String title;
     private int fine;
+    @JsonProperty("issueDate")
     private long timestamp;
     @ColumnInfo(name = "member_id")
     private int memberId;

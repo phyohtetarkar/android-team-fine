@@ -1,8 +1,5 @@
 package com.team.androidfine.model.repo;
 
-import androidx.lifecycle.LiveData;
-
-import com.team.androidfine.model.dao.MemberDao;
 import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
 
@@ -10,51 +7,23 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 
-public class MemberRepo {
+public interface MemberRepo {
 
-    private MemberDao dao;
+    Completable save(Member member);
 
-    public MemberRepo(MemberDao dao) {
-        this.dao = dao;
-    }
+    Completable insert(Member member);
 
-    public Completable save(Member member) {
-        if (member.getId() > 0) {
-            return dao.update(member);
-        }
+    Completable delete(Member member);
 
-        return dao.insert(member);
-    }
+    Completable deleteById(int id);
 
-    public Completable insert(Member member) {
-        return dao.insert(member);
-    }
+    Single<Member> findById(int id);
 
-    public Completable delete(Member member) {
-        return dao.delete(member);
-    }
+    Flowable<List<Member>> findAll();
 
-    public Completable deleteById(int id) {
-        return dao.deleteById(id);
-    }
+    Flowable<List<MemberTuple>> findAllWithFine();
 
-    public Single<Member> findById(int id) {
-        return dao.findById(id);
-    }
-
-    public Flowable<List<Member>> findAll() {
-        return dao.findAll();
-    }
-
-    public Flowable<List<MemberTuple>> findAllWithFine() {
-        return dao.findAllWithFine();
-    }
-
-    public Flowable<List<String>> findImages() {
-        return dao.findImages();
-    }
-
+    Flowable<List<String>> findImages();
 }
