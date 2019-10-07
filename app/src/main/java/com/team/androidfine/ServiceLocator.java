@@ -59,7 +59,7 @@ public abstract class ServiceLocator {
             this.context = ctx;
             openDatabase();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.211.130:8080/")
+                    .baseUrl("http://192.168.211.137:8080/android-fine/")
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(JacksonConverterFactory.create())
                     .build();

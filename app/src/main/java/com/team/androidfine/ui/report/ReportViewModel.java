@@ -19,6 +19,7 @@ import org.joda.time.LocalDateTime;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -42,7 +43,9 @@ public class ReportViewModel extends AndroidViewModel {
         disposable.add(repo.findPieReport()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(pieLiveData::setValue));
+                .subscribe(pieLiveData::setValue, t -> {
+                    t.printStackTrace();
+                }));
     }
 
     void exportCSV() {
@@ -64,6 +67,8 @@ public class ReportViewModel extends AndroidViewModel {
                     } catch (IOException e) {
                         exportResult.setValue("Export fail");
                     }
+                }, t -> {
+                    t.printStackTrace();
                 }));
     }
 

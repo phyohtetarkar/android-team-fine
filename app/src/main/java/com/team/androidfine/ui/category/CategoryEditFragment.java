@@ -19,6 +19,16 @@ public class CategoryEditFragment extends DialogFragment {
     private CategoryEditViewModel viewModel;
     private CategoryEditBinding binding;
 
+    interface SaveCompleteDelegate {
+        void onComplete();
+    }
+
+    private SaveCompleteDelegate saveCompleteDelegate;
+
+    public void setSaveCompleteDelegate(SaveCompleteDelegate saveCompleteDelegate) {
+        this.saveCompleteDelegate = saveCompleteDelegate;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +55,10 @@ public class CategoryEditFragment extends DialogFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel.saveResult.observe(this, result -> {
-            if (result) dismiss();
+            if (result) {
+                if (saveCompleteDelegate != null) saveCompleteDelegate.onComplete();
+                dismiss();
+            }
         });
         int id = getArguments() != null ? getArguments().getInt(KEY_CATEGORY_ID) : 0;
         viewModel.findById(id);

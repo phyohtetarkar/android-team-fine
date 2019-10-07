@@ -32,7 +32,9 @@ public class MemberFineViewModel extends AndroidViewModel {
         disposable.add(repo.insert(fine)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe());
+                .subscribe(this::findAll, t -> {
+                    t.printStackTrace();
+                }));
     }
 
     public void findAll() {
@@ -48,8 +50,10 @@ public class MemberFineViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     deleteResult.setValue(true);
+                    findAll();
                 }, t -> {
                     deleteResult.setValue(false);
+                    findAll();
                 }));
     }
 

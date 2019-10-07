@@ -1,7 +1,10 @@
 package com.team.androidfine.model.entity.tuple;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PieChartReportTuple {
 
+    @JsonProperty("name")
     private String member;
     private int amount;
 

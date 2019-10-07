@@ -2,6 +2,7 @@ package com.team.androidfine.model.api;
 
 import com.team.androidfine.model.entity.MemberFine;
 import com.team.androidfine.model.entity.tuple.FineTuple;
+import com.team.androidfine.model.entity.tuple.PieChartReportTuple;
 
 import java.util.List;
 
@@ -25,6 +26,12 @@ public interface MemberFineAPI {
     @GET("fine")
     Observable<Response<List<FineTuple>>> find(@Query("offset") int offset, @Query("limit") int limit);
 
+    @GET("fine")
+    Observable<Response<List<FineTuple>>> findAll();
+
     @DELETE("fine/{id}")
     Observable<Response<Void>> delete(@Path("id") long id);
+
+    @GET("fine/report")
+    Observable<Response<List<PieChartReportTuple>>> findReport();
 }

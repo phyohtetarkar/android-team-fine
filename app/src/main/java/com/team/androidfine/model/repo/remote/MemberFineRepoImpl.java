@@ -70,14 +70,20 @@ public class MemberFineRepoImpl implements MemberFineRepo {
                 } else {
                     source.onError(new RuntimeException("MemberFine not found."));
                 }
-            },source::onError);
+            }, source::onError);
         });
     }
 
     @Override
     public Flowable<List<FineTuple>> findAllWithMember() {
         return Flowable.create(source -> {
-            // TODO api implementation
+            api.findAll().blockingSubscribe(resp -> {
+                if (resp.code() == 200) {
+                    source.onNext(resp.body());
+                } else {
+                    source.onError(new RuntimeException("MemberFines not found."));
+                }
+            }, source::onError);
         }, BackpressureStrategy.LATEST);
     }
 
@@ -90,7 +96,13 @@ public class MemberFineRepoImpl implements MemberFineRepo {
     @Override
     public Flowable<List<PieChartReportTuple>> findPieReport() {
         return Flowable.create(source -> {
-            // TODO api implementation
+            api.findReport().blockingSubscribe(resp -> {
+                if (resp.code() == 200) {
+                    source.onNext(resp.body());
+                } else {
+                    source.onError(new RuntimeException("Report not found."));
+                }
+            }, source::onError);
         }, BackpressureStrategy.LATEST);
     }
 }

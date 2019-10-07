@@ -43,12 +43,6 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
         });
 
         viewModel = ViewModelProviders.of(this).get(MemberViewModel.class);
-        viewModel.members.observe(this, list -> {
-            Collections.sort(list, (f, b) -> Long.compare(b.getTotalFine(), f.getTotalFine()));
-            adapter.submitList(list);
-            showRecyclerViewAnimation();
-        });
-        new Handler().postDelayed(viewModel::findAll, 500);
     }
 
     @Override
@@ -56,6 +50,12 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
         super.onActivityCreated(savedInstanceState);
         MainActivity activity = (MainActivity) requireActivity();
         activity.getSupportActionBar().setTitle("Members");
+        viewModel.members.observe(this, list -> {
+            Collections.sort(list, (f, b) -> Long.compare(b.getTotalFine(), f.getTotalFine()));
+            adapter.submitList(list);
+            showRecyclerViewAnimation();
+        });
+        new Handler().postDelayed(viewModel::findAll, 500);
     }
 
     @Override

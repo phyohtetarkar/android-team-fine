@@ -33,7 +33,9 @@ public class MemberViewModel extends AndroidViewModel {
         disposable.add(repo.findAllWithFine()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(members::setValue));
+                .subscribe(members::setValue, t -> {
+                    t.printStackTrace();
+                }));
     }
 
     @Override

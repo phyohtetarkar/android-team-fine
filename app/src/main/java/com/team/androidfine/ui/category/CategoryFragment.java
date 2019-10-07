@@ -3,6 +3,7 @@ package com.team.androidfine.ui.category;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,15 @@ public class CategoryFragment extends ListItemFragment<Category> {
                 Snackbar.make(getView(), "Fail to delete category!", Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        if (childFragment instanceof CategoryEditFragment) {
+            ((CategoryEditFragment) childFragment).setSaveCompleteDelegate(() -> {
+                new Handler().postDelayed(viewModel::findCategories, 500);
+            });
+        }
     }
 
     @Override
@@ -71,8 +81,8 @@ public class CategoryFragment extends ListItemFragment<Category> {
     }
 
     private void showEdit(Integer id) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        Fragment prev = getChildFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
         }

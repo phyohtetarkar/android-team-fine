@@ -33,8 +33,7 @@ public class CategoryViewModel extends AndroidViewModel {
         disposable.add(repo.insert(category)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                }, t -> {
+                .subscribe(this::findCategories, t -> {
                 }));
     }
 
@@ -53,8 +52,10 @@ public class CategoryViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     deleteResult.setValue(true);
+                    findCategories();
                 }, t -> {
                     deleteResult.setValue(false);
+                    findCategories();
                 }));
     }
 
