@@ -31,6 +31,7 @@ public class MemberEditViewModel extends AndroidViewModel {
     }
 
     void save() {
+        File file = new File(member.getValue().getPhoto());
         disposable.add(repo.save(member.getValue())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -38,10 +39,26 @@ public class MemberEditViewModel extends AndroidViewModel {
                     saveResult.setValue(true);
                 }, t -> {
                     if (member.getValue().getPhoto() != null) {
-                        File file = new File(member.getValue().getPhoto());
                         if (file.exists()) file.delete();
                     }
                     saveResult.setValue(false);
+                }));
+    }
+
+    void saveImage(File file) {
+        if (!file.exists()) {
+            return;
+        }
+
+        disposable.add(repo.saveImage(file)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(image -> {
+                    member.getValue().setPhoto(image);
+                    file.delete();
+                }, t -> {
+                    file.delete();
+                    t.printStackTrace();
                 }));
     }
 

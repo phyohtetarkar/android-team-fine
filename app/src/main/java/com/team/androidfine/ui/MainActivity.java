@@ -19,13 +19,14 @@ import com.team.androidfine.R;
 public class MainActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle toggle;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigationView = findViewById(R.id.navigationView);
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchToggle(boolean enable) {
         toggle.setDrawerIndicatorEnabled(enable);
+        drawerLayout.setDrawerLockMode(enable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     public void hideKeyboard() {

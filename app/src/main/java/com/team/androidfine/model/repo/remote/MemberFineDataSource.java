@@ -30,6 +30,8 @@ public class MemberFineDataSource extends PageKeyedDataSource<Integer, Fine> {
             if (resp.code() == 200) {
                 callback.onResult(groupFines(resp.body()), 0, 1);
             }
+        }, t -> {
+            t.printStackTrace();
         });
     }
 
@@ -45,7 +47,7 @@ public class MemberFineDataSource extends PageKeyedDataSource<Integer, Fine> {
             if (resp.code() == 200) {
                 callback.onResult(groupFines(resp.body()), params.key + 1);
             }
-        });
+        }, t -> t.printStackTrace());
     }
 
     private List<Fine> groupFines(List<FineTuple> list) {

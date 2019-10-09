@@ -1,12 +1,16 @@
 package com.team.androidfine.model.entity;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.team.androidfine.BR;
 
 import java.util.Objects;
 
 @Entity
-public class Member {
+public class Member extends BaseObservable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -29,12 +33,14 @@ public class Member {
         this.name = name;
     }
 
+    @Bindable
     public String getPhoto() {
         return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
+        notifyPropertyChanged(BR.photo);
     }
 
     @Override

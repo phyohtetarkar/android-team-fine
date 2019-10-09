@@ -61,25 +61,26 @@ public class MoreFragment extends Fragment {
         });
 
         tvBackUp.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            /*if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE_STORAGE);
                 return;
             }
-            executeBackup();
+            executeBackup();*/
+            Snackbar.make(view, "Backup service unavailable!", Snackbar.LENGTH_SHORT).show();
         });
 
         tvRestore.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+           /* if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_READ_STORAGE);
                 return;
-            }
+            }*/
 
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("*/*");
-            startActivityForResult(intent, RESTORE_FILE_REQUEST);
-
+            //Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            //intent.setType("*/*");
+            //startActivityForResult(intent, RESTORE_FILE_REQUEST);
+            Snackbar.make(view, "Restore service unavailable!", Snackbar.LENGTH_SHORT).show();
         });
     }
 

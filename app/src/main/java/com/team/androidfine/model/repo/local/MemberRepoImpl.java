@@ -1,17 +1,15 @@
 package com.team.androidfine.model.repo.local;
 
-import androidx.lifecycle.LiveData;
-
 import com.team.androidfine.model.dao.MemberDao;
 import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
 import com.team.androidfine.model.repo.MemberRepo;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 public class MemberRepoImpl implements MemberRepo {
@@ -28,6 +26,11 @@ public class MemberRepoImpl implements MemberRepo {
         }
 
         return dao.insert(member);
+    }
+
+    @Override
+    public Single<String> saveImage(File image) {
+        return null;
     }
 
     public Completable insert(Member member) {

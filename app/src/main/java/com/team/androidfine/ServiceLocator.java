@@ -20,6 +20,7 @@ import com.team.androidfine.model.service.DatabaseBackupRestoreService;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public abstract class ServiceLocator {
 
@@ -59,8 +60,9 @@ public abstract class ServiceLocator {
             this.context = ctx;
             openDatabase();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.211.137:8080/android-fine/")
+                    .baseUrl(ctx.getString(R.string.server_path) + ":8080/android-fine/")
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(JacksonConverterFactory.create())
                     .build();
         }

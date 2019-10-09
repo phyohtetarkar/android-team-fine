@@ -1,4 +1,6 @@
 <resources>
+    <string name="server_path">http://192.168.211.252</string>
+
     <string name="app_name">Android Fine</string>
 
     <string name="drawer_open">Drawer open.</string>

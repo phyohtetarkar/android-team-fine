@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -225,10 +223,13 @@ public class MemberEditFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && currentPhotoFilePath != null) {
             binding.memberPhoto.setImageURI(Uri.parse(currentPhotoFilePath));
-            viewModel.member.getValue().setPhoto(currentPhotoFilePath);
+            File image = new File(currentPhotoFilePath);
+            //viewModel.member.getValue().setPhoto(image.getName());
+            viewModel.saveImage(image);
         } else if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK) {
             Uri photoUri = data.getData();
             writeImage(photoUri);
+            viewModel.saveImage(new File(currentPhotoFilePath));
         }
     }
 
@@ -283,9 +284,9 @@ public class MemberEditFragment extends Fragment {
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
 
-            binding.memberPhoto.setImageBitmap(rotatedBitmap);
+            // binding.memberPhoto.setImageBitmap(rotatedBitmap);
             viewModel.setOldPhoto(viewModel.member.getValue().getPhoto());
-            viewModel.member.getValue().setPhoto(currentPhotoFilePath);
+            // viewModel.member.getValue().setPhoto(file.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }

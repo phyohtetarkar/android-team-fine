@@ -5,12 +5,16 @@ import com.team.androidfine.model.entity.Member;
 import com.team.androidfine.model.entity.tuple.MemberTuple;
 import com.team.androidfine.model.repo.MemberRepo;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MemberRepoImpl implements MemberRepo {
 
@@ -28,6 +32,20 @@ public class MemberRepoImpl implements MemberRepo {
                     source.onComplete();
                 } else {
                     source.onError(new RuntimeException("Member cannot save."));
+                }
+            }, source::onError);
+        });
+    }
+
+    @Override
+    public Single<String> saveImage(File image) {
+        return Single.create(source -> {
+            RequestBody body = RequestBody.create(MediaType.parse("image/*"), image);
+            api.upload(MultipartBody.Part.createFormData("image", image.getName(), body)).blockingSubscribe(resp -> {
+                if (resp.code() == 200) {
+                    source.onSuccess(resp.body());
+                } else {
+                    source.onError(new RuntimeException("Image upload failed."));
                 }
             }, source::onError);
         });
@@ -65,7 +83,7 @@ public class MemberRepoImpl implements MemberRepo {
                 } else {
                     source.onError(new RuntimeException("Member not found."));
                 }
-            },source::onError);
+            }, source::onError);
         });
     }
 

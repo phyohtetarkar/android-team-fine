@@ -1,12 +1,15 @@
 package com.team.androidfine;
 
 import android.net.Uri;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
+
+import com.squareup.picasso.Picasso;
 
 public class BindingUtil {
 
@@ -31,7 +34,9 @@ public class BindingUtil {
     @BindingAdapter("path")
     public static void setImageUri(ImageView imageView, String imageFilePath) {
         if (imageFilePath != null && !imageFilePath.isEmpty()) {
-            imageView.setImageURI(Uri.parse(imageFilePath));
+            Picasso.get().load(imageView.getContext().getString(R.string.server_path) + "/android-fine/" + imageFilePath)
+                    .into(imageView);
+            //imageView.setImageURI(Uri.parse(imageFilePath));
         }
     }
 }

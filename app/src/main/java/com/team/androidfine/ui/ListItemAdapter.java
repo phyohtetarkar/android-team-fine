@@ -79,6 +79,7 @@ public abstract class ListItemAdapter<T> extends ListAdapter<T, ListItemAdapter.
 
         <E> void bind(E obj) {
             binding.setVariable(BR.obj, obj);
+            binding.executePendingBindings();
         }
     }
 
