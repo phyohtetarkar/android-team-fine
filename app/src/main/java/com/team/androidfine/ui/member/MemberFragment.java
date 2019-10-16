@@ -54,6 +54,7 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
             Collections.sort(list, (f, b) -> Long.compare(b.getTotalFine(), f.getTotalFine()));
             adapter.submitList(list);
             showRecyclerViewAnimation();
+            stopRefresh();
         });
         new Handler().postDelayed(viewModel::findAll, 500);
     }
@@ -74,4 +75,8 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
         Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment, null, options);
     }
 
+    @Override
+    protected void onSwipeRefresh() {
+        viewModel.findAll();
+    }
 }

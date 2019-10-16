@@ -45,13 +45,14 @@ public class MemberFineFragment extends ListItemFragment<Fine> {
                     .setPopEnterAnim(R.anim.nav_pop_enter_from_left_anim)
                     .setPopExitAnim(R.anim.nav_pop_exit_from_left_anim)
                     .build();
-            Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, args,options);
+            Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, args, options);
         });
 
         viewModel = ViewModelProviders.of(this).get(MemberFineViewModel.class);
         viewModel.fines.observe(this, list -> {
             adapter.submitList(list);
             showRecyclerViewAnimation();
+            stopRefresh();
         });
 
         enableSwipeDelete = true;
@@ -105,6 +106,11 @@ public class MemberFineFragment extends ListItemFragment<Fine> {
                 .setEnterAnim(R.anim.nav_enter_from_bottom_anim)
                 .setPopExitAnim(R.anim.nav_pop_exit_to_bottom_anim)
                 .build();
-        Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment,null,options);
+        Navigation.findNavController(getView()).navigate(R.id.action_memberFineFragment_to_memberFineEditFragment, null, options);
+    }
+
+    @Override
+    protected void onSwipeRefresh() {
+        viewModel.findAll();
     }
 }

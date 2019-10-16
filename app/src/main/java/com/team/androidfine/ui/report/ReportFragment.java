@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -94,6 +95,11 @@ public class ReportFragment extends Fragment {
         barChart.getLegend().setEnabled(false);
         barChart.getXAxis().setTextSize(10f);
         barChart.setScaleEnabled(false);
+
+        SwipeRefreshLayout layout = view.findViewById(R.id.swipeRefreshLayout);
+        layout.setOnRefreshListener(() -> {
+            viewModel.findReports();
+        });
     }
 
     @Override
@@ -125,6 +131,8 @@ public class ReportFragment extends Fragment {
                 pieChart.invalidate();
                 barChart.invalidate();
             }
+            SwipeRefreshLayout layout = getView().findViewById(R.id.swipeRefreshLayout);
+            layout.setRefreshing(false);
         });
         viewModel.findReports();
     }

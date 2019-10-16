@@ -28,6 +28,7 @@ public class CategoryFragment extends ListItemFragment<Category> {
         viewModel.categories.observe(this, list -> {
             adapter.submitList(list);
             showRecyclerViewAnimation();
+            stopRefresh();
         });
         enableSwipeDelete = true;
         viewModel.deleteResult.observe(this, result -> {
@@ -78,6 +79,11 @@ public class CategoryFragment extends ListItemFragment<Category> {
         }, item -> {
             viewModel.insert(item);
         });
+    }
+
+    @Override
+    protected void onSwipeRefresh() {
+        viewModel.findCategories();
     }
 
     private void showEdit(Integer id) {
