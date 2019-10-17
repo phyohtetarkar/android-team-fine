@@ -54,11 +54,15 @@ public class MemberFineFragment extends ListItemFragment<Fine> {
             showRecyclerViewAnimation();
             stopRefresh();
         });
+        viewModel.errorMessage.observe(this, msg -> {
+            stopRefresh();
+            Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_LONG).show();
+        });
 
         enableSwipeDelete = true;
         viewModel.deleteResult.observe(this, result -> {
             if (!result) {
-                Snackbar.make(getView(), "Fail to delete fine!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, "Fail to delete fine!", Snackbar.LENGTH_LONG).show();
             }
         });
     }

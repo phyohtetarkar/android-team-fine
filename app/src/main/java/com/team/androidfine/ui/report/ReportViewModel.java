@@ -33,6 +33,7 @@ public class ReportViewModel extends AndroidViewModel {
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<List<PieChartReportTuple>> pieLiveData = new MutableLiveData<>();
     final MutableLiveData<String> exportResult = new MutableLiveData<>();
+    final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public ReportViewModel(@NonNull Application application) {
         super(application);
@@ -44,7 +45,7 @@ public class ReportViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pieLiveData::setValue, t -> {
-                    t.printStackTrace();
+                    errorMessage.setValue(t.getMessage());
                 }));
     }
 

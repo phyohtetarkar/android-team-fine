@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.util.Consumer;
 import androidx.core.util.Supplier;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.team.androidfine.R;
@@ -25,6 +27,7 @@ public abstract class ListItemFragment<T> extends Fragment {
 
     private boolean started;
     protected boolean enableSwipeDelete;
+    protected CoordinatorLayout coordinatorLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public abstract class ListItemFragment<T> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -72,6 +77,7 @@ public abstract class ListItemFragment<T> extends Fragment {
 
         SwipeRefreshLayout layout = view.findViewById(R.id.swipeRefreshLayout);
         layout.setOnRefreshListener(this::onSwipeRefresh);
+        layout.setColorSchemeColors(ColorTemplate.JOYFUL_COLORS);
     }
 
     protected void showRecyclerViewAnimation() {
@@ -101,7 +107,7 @@ public abstract class ListItemFragment<T> extends Fragment {
         T itemToDelete = supplier.get();
         deleteFunc.work();
 
-        Snackbar snackbar = Snackbar.make(getView(), itemToDelete.getClass().getSimpleName() + " deleted!", Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, itemToDelete.getClass().getSimpleName() + " deleted!", Snackbar.LENGTH_LONG);
         snackbar.setAction("Undo", v -> {
             insertFunc.accept(itemToDelete);
         });
@@ -109,4 +115,9 @@ public abstract class ListItemFragment<T> extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        coordinatorLayout = null;
+    }
 }

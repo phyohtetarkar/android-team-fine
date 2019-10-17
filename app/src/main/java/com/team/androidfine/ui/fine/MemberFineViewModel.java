@@ -22,6 +22,7 @@ public class MemberFineViewModel extends AndroidViewModel {
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<PagedList<Fine>> fines = new MutableLiveData<>();
     final MutableLiveData<Boolean> deleteResult = new MutableLiveData<>();
+    final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public MemberFineViewModel(@NonNull Application application) {
         super(application);
@@ -41,7 +42,9 @@ public class MemberFineViewModel extends AndroidViewModel {
         disposable.add(repo.findAllWithMemberPageable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(fines::setValue));
+                .subscribe(fines::setValue, t -> {
+                    errorMessage.setValue(t.getMessage());
+                }));
     }
 
     public void delete(long id) {

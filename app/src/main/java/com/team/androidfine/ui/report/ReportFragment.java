@@ -24,6 +24,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.snackbar.Snackbar;
 import com.team.androidfine.R;
 import com.team.androidfine.ui.MainActivity;
@@ -100,6 +101,7 @@ public class ReportFragment extends Fragment {
         layout.setOnRefreshListener(() -> {
             viewModel.findReports();
         });
+        layout.setColorSchemeColors(ColorTemplate.MATERIAL_COLORS);
     }
 
     @Override
@@ -131,10 +133,18 @@ public class ReportFragment extends Fragment {
                 pieChart.invalidate();
                 barChart.invalidate();
             }
-            SwipeRefreshLayout layout = getView().findViewById(R.id.swipeRefreshLayout);
-            layout.setRefreshing(false);
+            stopRefresh();
+        });
+        viewModel.errorMessage.observe(this, msg -> {
+            stopRefresh();
+            Snackbar.make(getView(), msg, Snackbar.LENGTH_LONG).show();
         });
         viewModel.findReports();
+    }
+
+    private void stopRefresh() {
+        SwipeRefreshLayout layout = getView().findViewById(R.id.swipeRefreshLayout);
+        layout.setRefreshing(false);
     }
 
     @Override

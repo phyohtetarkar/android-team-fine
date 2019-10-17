@@ -23,6 +23,7 @@ public class CategoryViewModel extends AndroidViewModel {
 
     final MutableLiveData<List<Category>> categories = new MutableLiveData<>();
     final MutableLiveData<Boolean> deleteResult = new MutableLiveData<>();
+    final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public CategoryViewModel(@NonNull Application application) {
         super(application);
@@ -42,7 +43,7 @@ public class CategoryViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories::setValue, t -> {
-                    t.printStackTrace();
+                   errorMessage.setValue(t.getMessage());
                 }));
     }
 

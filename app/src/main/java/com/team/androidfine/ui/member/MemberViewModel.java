@@ -23,6 +23,7 @@ public class MemberViewModel extends AndroidViewModel {
     final CompositeDisposable disposable = new CompositeDisposable();
     final MutableLiveData<List<MemberTuple>> members = new MutableLiveData<>();
     final MutableLiveData<Boolean> deleteResult = new MutableLiveData<>();
+    final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public MemberViewModel(@NonNull Application application) {
         super(application);
@@ -34,7 +35,7 @@ public class MemberViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(members::setValue, t -> {
-                    t.printStackTrace();
+                    errorMessage.setValue(t.getMessage());
                 }));
     }
 

@@ -39,7 +39,7 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
                     .setPopEnterAnim(R.anim.nav_pop_enter_from_left_anim)
                     .setPopExitAnim(R.anim.nav_pop_exit_from_left_anim)
                     .build();
-            Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment, args,options);
+            Navigation.findNavController(getView()).navigate(R.id.action_memberFragment_to_memberEditFragment, args, options);
         });
 
         viewModel = ViewModelProviders.of(this).get(MemberViewModel.class);
@@ -55,6 +55,10 @@ public class MemberFragment extends ListItemFragment<MemberTuple> {
             adapter.submitList(list);
             showRecyclerViewAnimation();
             stopRefresh();
+        });
+        viewModel.errorMessage.observe(this, msg -> {
+            stopRefresh();
+            Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_LONG).show();
         });
         new Handler().postDelayed(viewModel::findAll, 500);
     }

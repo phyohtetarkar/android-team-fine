@@ -30,10 +30,14 @@ public class CategoryFragment extends ListItemFragment<Category> {
             showRecyclerViewAnimation();
             stopRefresh();
         });
+        viewModel.errorMessage.observe(this, msg -> {
+            stopRefresh();
+            Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_LONG).show();
+        });
         enableSwipeDelete = true;
         viewModel.deleteResult.observe(this, result -> {
             if (!result) {
-                Snackbar.make(getView(), "Fail to delete category!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, "Fail to delete category!", Snackbar.LENGTH_LONG).show();
             }
         });
     }
